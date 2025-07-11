@@ -12,6 +12,18 @@
 
 ## Installation
 
+{%- if cookiecutter.use_uv == "y" %}
+
+### Using uv (Recommended)
+
+```bash
+uv add {{ cookiecutter.project_slug }}
+```
+
+### Using pip
+
+{%- endif %}
+
 Install {{ cookiecutter.project_name }} from PyPI:
 
 ```bash
@@ -26,6 +38,21 @@ pip install git+https://github.com/{{ cookiecutter.github_username }}/{{ cookiec
 
 ## Quick Start
 
+{%- if cookiecutter.use_uv == "y" %}
+
+```bash
+# Install with uv (recommended)
+uv add {{ cookiecutter.project_slug }}
+
+# Or install from PyPI
+pip install {{ cookiecutter.project_slug }}
+
+# Install from source
+pip install git+https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}.git
+```
+
+{%- else %}
+
 ```bash
 # Install from PyPI
 pip install {{ cookiecutter.project_slug }}
@@ -33,6 +60,8 @@ pip install {{ cookiecutter.project_slug }}
 # Install from source
 pip install git+https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}.git
 ```
+
+{%- endif %}
 
 ## ✨ Features
 
@@ -56,6 +85,44 @@ pip install git+https://github.com/{{ cookiecutter.github_username }}/{{ cookiec
 ## 🛠️ Development
 
 ### Setup Development Environment
+
+{%- if cookiecutter.use_uv == "y" %}
+
+#### Using uv (Recommended)
+
+[uv](https://docs.astral.sh/uv/) is a fast Python package manager and project manager. It's much faster than pip and handles virtual environments automatically.
+
+```bash
+# Clone the repository
+git clone https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}.git
+cd {{ cookiecutter.project_slug }}
+
+# Install dependencies and create virtual environment automatically
+uv sync
+
+# Install in development mode
+uv pip install -e ".[dev]"
+
+# Activate the virtual environment (optional, uv run handles this automatically)
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```
+
+For most development tasks, you can use `uv run` which automatically activates the virtual environment:
+
+```bash
+# Run tests
+uv run pytest
+
+# Run linting
+uv run ruff check
+
+# Run type checking
+uv run mypy src/{{ cookiecutter.project_slug }}
+```
+
+#### Using pip/venv (Alternative)
+
+{%- endif %}
 
 ```bash
 # Clone the repository

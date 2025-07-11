@@ -19,6 +19,7 @@ This template provides extensive customization options through `cookiecutter.jso
 - `license`: License type (MIT, Apache-2.0, BSD-3-Clause, GPL-3.0, etc.)
 
 ### Development Tools
+- `use_uv`: Modern Python package manager (recommended: y)
 - `use_ruff`: Ultra-fast linter and formatter (recommended: y)
 - `use_mypy`: Static type checking (recommended: y)
 - `use_pytest`: Modern testing framework (recommended: y)
@@ -70,6 +71,7 @@ This template creates a Python package with modern best practices:
 - **Safety** - Dependency vulnerability scanning
 
 ### 🔧 **Development Tools**
+- **uv** - Ultra-fast Python package manager and project manager (optional)
 - **pre-commit** - Automated code quality checks before commits
 - **Tox** - Testing across multiple Python versions
 - **Nox** - Flexible task automation (alternative to Tox)
@@ -183,6 +185,7 @@ cookiecutter https://github.com/s-celles/cookiecutter-python-package.git
 
 | Tool | Purpose | Why Important |
 |------|---------|---------------|
+| **uv** | Package Management | Ultra-fast Python package installer and resolver |
 | **Ruff** | Linting & Formatting | 10-100x faster than flake8/black, combines multiple tools |
 | **MyPy** | Type Checking | Catches bugs early, improves code documentation |
 | **pytest** | Testing | Modern features, fixtures, parametrization |

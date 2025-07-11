@@ -37,6 +37,7 @@
 
   "_project_management": "---",
   "_comment_project": "Project management tools",
+  "use_uv": ["y", "n"],
   "use_tox": ["n", "y"],
   "use_nox": ["n", "y"],
   "use_commitizen": ["n", "y"],

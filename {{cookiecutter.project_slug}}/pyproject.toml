@@ -246,3 +246,51 @@ version_scheme = "semver"
 version_provider = "pep621"
 update_changelog_on_bump = true
 {%- endif %}
+
+{%- if cookiecutter.use_uv == "y" %}
+
+[tool.uv]
+dev-dependencies = [
+{%- if cookiecutter.use_pytest == "y" %}
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "pytest-xdist>=3.0",
+{%- endif %}
+{%- if cookiecutter.use_ruff == "y" %}
+    "ruff>=0.1.0",
+{%- endif %}
+{%- if cookiecutter.use_mypy == "y" %}
+    "mypy>=1.0",
+{%- endif %}
+{%- if cookiecutter.use_pre_commit == "y" %}
+    "pre-commit>=3.0",
+{%- endif %}
+{%- if cookiecutter.use_bandit == "y" %}
+    "bandit>=1.7",
+{%- endif %}
+{%- if cookiecutter.use_safety == "y" %}
+    "safety>=2.0",
+{%- endif %}
+{%- if cookiecutter.use_tox == "y" %}
+    "tox>=4.0",
+{%- endif %}
+{%- if cookiecutter.use_nox == "y" %}
+    "nox>=2023.4.22",
+{%- endif %}
+{%- if cookiecutter.use_commitizen == "y" %}
+    "commitizen>=3.0",
+{%- endif %}
+{%- if cookiecutter.use_sphinx == "y" %}
+    "sphinx>=7.0",
+    "sphinx-rtd-theme>=1.3",
+    "myst-parser>=2.0",
+{%- elif cookiecutter.use_mkdocs == "y" %}
+    "mkdocs>=1.5",
+    "mkdocs-material>=9.0",
+    "mkdocs-git-revision-date-localized-plugin>=1.2",
+{%- endif %}
+]
+
+[tool.uv.workspace]
+members = ["."]
+{%- endif %}

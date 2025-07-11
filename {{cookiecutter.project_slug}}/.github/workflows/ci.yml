@@ -32,6 +32,17 @@ jobs:
       with:
         python-version: {% raw %}${{ matrix.python-version }}{% endraw %}
 
+{%- if cookiecutter.use_uv == "y" %}
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        version: "latest"
+
+    - name: Install dependencies
+      run: |
+        uv sync --all-extras
+
+{%- else %}
     - name: Cache pip packages
       uses: actions/cache@v4
       with:
@@ -45,32 +56,55 @@ jobs:
         python -m pip install --upgrade pip
         pip install -e ".[dev]"
 
+{%- endif %}
+
 {%- if cookiecutter.use_ruff == "y" %}
     - name: Lint with Ruff
       run: |
+{%- if cookiecutter.use_uv == "y" %}
+        uv run ruff check .
+        uv run ruff format --check .
+{%- else %}
         ruff check .
         ruff format --check .
+{%- endif %}
 {%- endif %}
 
 {%- if cookiecutter.use_mypy == "y" %}
     - name: Type check with MyPy
       run: |
+{%- if cookiecutter.use_uv == "y" %}
+        uv run mypy src/{{ cookiecutter.project_slug }}
+{%- else %}
         mypy src/{{ cookiecutter.project_slug }}
+{%- endif %}
 {%- endif %}
 
 {%- if cookiecutter.use_bandit == "y" %}
     - name: Security check with Bandit
       run: |
+{%- if cookiecutter.use_uv == "y" %}
+        uv run bandit -r src/{{ cookiecutter.project_slug }}/
+{%- else %}
         bandit -r src/{{ cookiecutter.project_slug }}/
+{%- endif %}
 {%- endif %}
 
 {%- if cookiecutter.use_pytest == "y" %}
     - name: Test with pytest
       run: |
 {%- if cookiecutter.use_coverage == "y" %}
+{%- if cookiecutter.use_uv == "y" %}
+        uv run pytest --cov=src/{{ cookiecutter.project_slug }} --cov-report=xml --cov-report=html
+{%- else %}
         pytest --cov=src/{{ cookiecutter.project_slug }} --cov-report=xml --cov-report=html
+{%- endif %}
+{%- else %}
+{%- if cookiecutter.use_uv == "y" %}
+        uv run pytest
 {%- else %}
         pytest
+{%- endif %}
 {%- endif %}
 {%- endif %}
 
@@ -94,6 +128,16 @@ jobs:
       with:
         python-version: '3.11'
     
+{%- if cookiecutter.use_uv == "y" %}
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        version: "latest"
+        
+    - name: Build package
+      run: uv build
+
+{%- else %}
     - name: Install build dependencies
       run: |
         python -m pip install --upgrade pip
@@ -101,7 +145,8 @@ jobs:
     
     - name: Build package
       run: python -m build
-    
+
+{%- endif %}
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:

@@ -104,6 +104,12 @@ ENV/
 env.bak/
 venv.bak/
 
+{%- if cookiecutter.use_uv == "y" %}
+# uv
+.uv_cache/
+uv.lock
+{%- endif %}
+
 # Spyder project settings
 .spyderproject
 .spyproject

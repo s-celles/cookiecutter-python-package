@@ -18,6 +18,37 @@ Thank you for your interest in contributing to {{ cookiecutter.project_name }}! 
    cd {{ cookiecutter.project_slug }}
    ```
 
+{%- if cookiecutter.use_uv == "y" %}
+
+2. **Set up development environment with uv (Recommended)**
+   
+   Install [uv](https://docs.astral.sh/uv/) if you haven't already:
+   ```bash
+   # On macOS and Linux
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   
+   # On Windows
+   powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+   ```
+   
+   Then set up the project:
+   ```bash
+   # Install dependencies and create virtual environment
+   uv sync
+   
+   # Install the package in development mode
+   uv pip install -e ".[dev]"
+   ```
+
+3. **Alternative: Create a virtual environment with pip**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -e ".[dev]"
+   ```
+
+{%- else %}
+
 2. **Create a virtual environment**
    ```bash
    python -m venv venv
@@ -29,11 +60,17 @@ Thank you for your interest in contributing to {{ cookiecutter.project_name }}! 
    pip install -e ".[dev]"
    ```
 
+{%- endif %}
+
 {%- if cookiecutter.use_pre_commit == "y" %}
 
 4. **Install pre-commit hooks**
    ```bash
+{%- if cookiecutter.use_uv == "y" %}
+   uv run pre-commit install
+{%- else %}
    pre-commit install
+{%- endif %}
    ```
 {%- endif %}
 
@@ -46,6 +83,15 @@ We use [Ruff](https://github.com/astral-sh/ruff) for code formatting and linting
 
 ```bash
 # Format code
+{%- if cookiecutter.use_uv == "y" %}
+uv run ruff format
+
+# Check for linting issues
+uv run ruff check
+
+# Fix auto-fixable issues
+uv run ruff check --fix
+{%- else %}
 ruff format
 
 # Check for linting issues
@@ -53,6 +99,7 @@ ruff check
 
 # Fix auto-fixable issues
 ruff check --fix
+{%- endif %}
 ```
 {%- endif %}
 
@@ -63,7 +110,11 @@ ruff check --fix
 We use [MyPy](https://mypy.readthedocs.io/) for static type checking:
 
 ```bash
+{%- if cookiecutter.use_uv == "y" %}
+uv run mypy src/{{ cookiecutter.project_slug }}
+{%- else %}
 mypy src/{{ cookiecutter.project_slug }}
+{%- endif %}
 ```
 {%- endif %}
 
@@ -75,6 +126,18 @@ We use [pytest](https://pytest.org/) for testing:
 
 ```bash
 # Run all tests
+{%- if cookiecutter.use_uv == "y" %}
+uv run pytest
+
+# Run with coverage
+uv run pytest --cov={{ cookiecutter.project_slug }}
+
+# Run specific test file
+uv run pytest tests/test_core.py
+
+# Run tests in parallel
+uv run pytest -n auto
+{%- else %}
 pytest
 
 # Run with coverage
@@ -85,6 +148,7 @@ pytest tests/test_core.py
 
 # Run tests in parallel
 pytest -n auto
+{%- endif %}
 ```
 
 Make sure to write tests for any new functionality you add.
@@ -97,7 +161,11 @@ Make sure to write tests for any new functionality you add.
 We use [Bandit](https://bandit.readthedocs.io/) for security checks:
 
 ```bash
+{%- if cookiecutter.use_uv == "y" %}
+uv run bandit -r src/{{ cookiecutter.project_slug }}/
+{%- else %}
 bandit -r src/{{ cookiecutter.project_slug }}/
+{%- endif %}
 ```
 {%- endif %}
 
