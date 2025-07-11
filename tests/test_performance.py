@@ -4,7 +4,7 @@ import concurrent.futures
 import tempfile
 import time
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 import pytest
 from cookiecutter.main import cookiecutter
@@ -19,7 +19,7 @@ class TestPerformance:
         return Path(__file__).parent.parent
 
     @pytest.fixture
-    def minimal_context(self) -> Dict[str, Any]:
+    def minimal_context(self) -> dict[str, Any]:
         """Minimal context for performance testing."""
         return {
             "full_name": "Test User",
@@ -57,7 +57,7 @@ class TestPerformance:
 
     @pytest.mark.slow
     def test_generation_speed(
-        self, template_dir: Path, minimal_context: Dict[str, Any]
+        self, template_dir: Path, minimal_context: dict[str, Any]
     ) -> None:
         """Test that template generation completes in reasonable time."""
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -74,9 +74,9 @@ class TestPerformance:
             generation_time = end_time - start_time
 
             # Template generation should complete in under 5 seconds
-            assert generation_time < 5.0, (
-                f"Template generation took {generation_time:.2f}s, expected < 5s"
-            )
+            assert (
+                generation_time < 5.0
+            ), f"Template generation took {generation_time:.2f}s, expected < 5s"
 
             # Verify the project was created
             project_path = Path(result)
@@ -84,7 +84,7 @@ class TestPerformance:
 
     @pytest.mark.slow
     def test_concurrent_generation(
-        self, template_dir: Path, minimal_context: Dict[str, Any]
+        self, template_dir: Path, minimal_context: dict[str, Any]
     ) -> None:
         """Test that multiple templates can be generated concurrently."""
         import platform
@@ -114,7 +114,7 @@ class TestPerformance:
                     extra_context=context,
                     output_dir=temp_dir,
                 )
-                return result
+                return str(result)
 
         # Generate 3 projects concurrently
         start_time = time.time()
@@ -129,9 +129,9 @@ class TestPerformance:
         total_time = end_time - start_time
 
         # Should complete all 3 in under 10 seconds
-        assert total_time < 10.0, (
-            f"Concurrent generation took {total_time:.2f}s, expected < 10s"
-        )
+        assert (
+            total_time < 10.0
+        ), f"Concurrent generation took {total_time:.2f}s, expected < 10s"
 
         # All projects should be generated
         assert len(results) == 3
@@ -189,9 +189,9 @@ class TestPerformance:
             generation_time = end_time - start_time
 
             # Even large projects should generate quickly
-            assert generation_time < 10.0, (
-                f"Large project generation took {generation_time:.2f}s, expected < 10s"
-            )
+            assert (
+                generation_time < 10.0
+            ), f"Large project generation took {generation_time:.2f}s, expected < 10s"
 
             project_path = Path(result)
             assert project_path.exists()

@@ -58,10 +58,10 @@ This cookiecutter template helps developers create modern Python packages with b
    ```bash
    # Run all tests
    make test
-   
+
    # Test template generation
    make bake-test
-   
+
    # Run quality checks
    make check
    ```
@@ -85,8 +85,8 @@ When modifying the template, always test:
    ```bash
    # Test minimal config
    cookiecutter . --no-input use_ruff=n use_mypy=n
-   
-   # Test full config  
+
+   # Test full config
    cookiecutter . --no-input use_ruff=y use_mypy=y use_github_actions=y
    ```
 

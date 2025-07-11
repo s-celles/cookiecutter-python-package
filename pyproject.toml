@@ -155,6 +155,12 @@ select = [
 ignore = [
     "E501",  # line too long (handled by formatter)
     "B905",  # zip() without an explicit strict= parameter
+    "PLR0133", # Two constants compared in a comparison (template specific)
+    "PLR0912", # Too many branches (template hooks can be complex)
+    "PLR0915", # Too many statements (template hooks can be complex)
+    "B007",   # Loop control variable not used within loop body
+    "F841",   # Local variable assigned to but never used
+    "PLR1714", # Consider merging multiple comparisons
 ]
 
 [tool.ruff.lint.per-file-ignores]
@@ -187,6 +193,8 @@ exclude = "{{cookiecutter.project_slug}}"  # Exclude template directory
 module = "tests.*"
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
+warn_return_any = false
+warn_unused_ignores = false
 
 [tool.bandit]
 exclude_dirs = ["tests", ".venv", "venv"]

@@ -9,7 +9,7 @@ This template provides extensive customization options through `cookiecutter.jso
 
 ### Project Information
 - `full_name`: Your full name
-- `email`: Your email address  
+- `email`: Your email address
 - `github_username`: Your GitHub username
 - `project_name`: The project display name
 - `project_slug`: Package/directory name (auto-generated)
@@ -31,7 +31,7 @@ This template provides extensive customization options through `cookiecutter.jso
 - `use_sphinx`: Sphinx documentation (traditional)
 - `use_mkdocs`: MkDocs documentation (modern Markdown)
 
-### CI/CD & Automation  
+### CI/CD & Automation
 - `use_github_actions`: GitHub Actions workflows (recommended: y)
 - `use_dependabot`: Automated dependency updates
 - `use_codecov`: Coverage reporting service
@@ -121,16 +121,16 @@ full_name [Your Name]: John Doe
 email [your.email@example.com]: john@example.com
 github_username [yourusername]: johndoe
 project_name [My Python Package]: Awesome Calculator
-project_slug [awesome_calculator]: 
+project_slug [awesome_calculator]:
 project_short_description [A modern Python package with best practices built-in.]: A calculator library with advanced features
-version [0.1.0]: 
-python_requires [>=3.9]: 
-license [MIT]: 
-use_ruff [y]: 
-use_mypy [y]: 
-use_pytest [y]: 
-use_coverage [y]: 
-use_pre_commit [y]: 
+version [0.1.0]:
+python_requires [>=3.9]:
+license [MIT]:
+use_ruff [y]:
+use_mypy [y]:
+use_pytest [y]:
+use_coverage [y]:
+use_pre_commit [y]:
 # ... more options
 ```
 

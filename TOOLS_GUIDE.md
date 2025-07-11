@@ -15,7 +15,7 @@ Modern Python development emphasizes:
 
 ### pyproject.toml (PEP 621)
 **What it is**: Modern Python project configuration file
-**Why important**: 
+**Why important**:
 - Single source of truth for project metadata
 - Replaces setup.py, setup.cfg, and requirements.txt
 - Supported by all modern Python tools
@@ -70,7 +70,7 @@ class TestMath(unittest.TestCase):
 ```bash
 # One tool replaces many:
 # black (formatting)
-# isort (import sorting)  
+# isort (import sorting)
 # flake8 (linting)
 # pyupgrade (syntax modernization)
 ruff format  # Format code
@@ -125,7 +125,7 @@ greet(123)  # MyPy catches this error
 ```bash
 # Automatically runs on every commit:
 # - Format code with Ruff
-# - Check types with MyPy  
+# - Check types with MyPy
 # - Run security scans
 # - Check for secrets
 ```
@@ -175,7 +175,7 @@ greet(123)  # MyPy catches this error
 ## 📚 Documentation
 
 ### MkDocs vs Sphinx
-**MkDocs**: 
+**MkDocs**:
 - Markdown-based
 - Faster to set up
 - Modern themes (Material)
@@ -227,7 +227,7 @@ greet(123)  # MyPy catches this error
 make install-dev        # Install dependencies
 make install-hooks      # Set up pre-commit
 
-# During development  
+# During development
 make test              # Run tests
 make lint              # Check code quality
 make format            # Fix formatting

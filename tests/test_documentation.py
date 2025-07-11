@@ -3,7 +3,6 @@
 import re
 import tempfile
 from pathlib import Path
-from typing import Dict
 
 import pytest
 from cookiecutter.main import cookiecutter
@@ -101,13 +100,14 @@ class TestDocumentation:
             if option in config:
                 # Options can be either string or list format
                 if isinstance(config[option], list):
-                    assert "y" in config[option] and "n" in config[option], (
-                        f"{option} should have 'y' and 'n' options"
-                    )
+                    assert (
+                        "y" in config[option] and "n" in config[option]
+                    ), f"{option} should have 'y' and 'n' options"
                 else:
-                    assert config[option] in ["y", "n"], (
-                        f"{option} should be 'y' or 'n'"
-                    )
+                    assert config[option] in [
+                        "y",
+                        "n",
+                    ], f"{option} should be 'y' or 'n'"
 
     def test_generated_project_documentation(self, template_dir: Path) -> None:
         """Test that generated projects have good documentation."""
@@ -219,9 +219,9 @@ class TestDocumentation:
                 for line in lines:
                     if line.strip():
                         # Should not have Windows-style paths in bash examples
-                        assert not re.match(r"[A-Z]:\\", line), (
-                            f"Windows path in bash example: {line}"
-                        )
+                        assert not re.match(
+                            r"[A-Z]:\\", line
+                        ), f"Windows path in bash example: {line}"
 
     def test_template_examples_work(self, template_dir: Path) -> None:
         """Test that examples in template documentation actually work."""
@@ -293,9 +293,9 @@ class TestDocumentation:
             common_licenses = ["MIT", "Apache-2.0", "BSD-3-Clause"]
 
             for license_type in common_licenses:
-                assert license_type in license_options, (
-                    f"Should support {license_type} license"
-                )
+                assert (
+                    license_type in license_options
+                ), f"Should support {license_type} license"
 
             # Test that license template works for each option
             project_template = template_dir / "{{cookiecutter.project_slug}}"
@@ -309,14 +309,14 @@ class TestDocumentation:
                     if license_type != "Proprietary":
                         # For SPDX format, check if license is in template variable or explicit
                         if license_type in ["MIT", "BSD-3-Clause"]:
-                            assert license_type in license_content, (
-                                f"License template should handle {license_type}"
-                            )
+                            assert (
+                                license_type in license_content
+                            ), f"License template should handle {license_type}"
                         else:
                             # SPDX fallback handles other licenses
-                            assert "{{ cookiecutter.license }}" in license_content, (
-                                f"Template should handle {license_type} via SPDX"
-                            )
+                            assert (
+                                "{{ cookiecutter.license }}" in license_content
+                            ), f"Template should handle {license_type} via SPDX"
 
 
 class TestExamples:
@@ -375,7 +375,7 @@ class TestExamples:
         ],
     )
     def test_example_configurations(
-        self, template_dir: Path, config_name: str, config: Dict[str, str]
+        self, template_dir: Path, config_name: str, config: dict[str, str]
     ) -> None:
         """Test different example configurations work correctly."""
         base_context = {

@@ -5,7 +5,7 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 import pytest
 from cookiecutter.main import cookiecutter
@@ -18,7 +18,7 @@ def template_dir() -> Path:
 
 
 @pytest.fixture
-def minimal_context() -> Dict[str, Any]:
+def minimal_context() -> dict[str, Any]:
     """Minimal context for quick testing."""
     return {
         "full_name": "Test User",
@@ -56,7 +56,7 @@ def minimal_context() -> Dict[str, Any]:
 
 
 @pytest.fixture
-def full_context() -> Dict[str, Any]:
+def full_context() -> dict[str, Any]:
     """Full context with all features enabled."""
     return {
         "full_name": "Test User",
@@ -160,7 +160,7 @@ class TestProjectGeneration:
     """Test actual project generation."""
 
     def test_minimal_generation(
-        self, template_dir: Path, minimal_context: Dict[str, Any]
+        self, template_dir: Path, minimal_context: dict[str, Any]
     ) -> None:
         """Test generating a project with minimal options."""
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -177,7 +177,7 @@ class TestProjectGeneration:
             assert (project_path / "src" / "test_package" / "__init__.py").exists()
 
     def test_full_generation(
-        self, template_dir: Path, full_context: Dict[str, Any]
+        self, template_dir: Path, full_context: dict[str, Any]
     ) -> None:
         """Test generating a project with all options enabled."""
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -201,7 +201,7 @@ class TestProjectGeneration:
 
     @pytest.mark.parametrize("cli_option", ["typer", "click", "argparse", "none"])
     def test_cli_options(
-        self, template_dir: Path, minimal_context: Dict[str, Any], cli_option: str
+        self, template_dir: Path, minimal_context: dict[str, Any], cli_option: str
     ) -> None:
         """Test different CLI framework options."""
         context = minimal_context.copy()
@@ -232,7 +232,7 @@ class TestProjectGeneration:
 
     @pytest.mark.parametrize("license_type", ["MIT", "Apache-2.0", "BSD-3-Clause"])
     def test_license_options(
-        self, template_dir: Path, minimal_context: Dict[str, Any], license_type: str
+        self, template_dir: Path, minimal_context: dict[str, Any], license_type: str
     ) -> None:
         """Test different license options."""
         context = minimal_context.copy()
@@ -264,7 +264,7 @@ class TestGeneratedProject:
     """Test that generated projects work correctly."""
 
     def test_pyproject_toml_is_valid(
-        self, template_dir: Path, minimal_context: Dict[str, Any]
+        self, template_dir: Path, minimal_context: dict[str, Any]
     ) -> None:
         """Test that generated pyproject.toml is valid."""
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -282,7 +282,7 @@ class TestGeneratedProject:
             try:
                 import tomllib  # Python 3.11+
             except ImportError:
-                import tomli as tomllib  # type: ignore
+                import tomli as tomllib
 
             with open(pyproject_file, "rb") as f:
                 config = tomllib.load(f)
@@ -293,7 +293,7 @@ class TestGeneratedProject:
             assert config["project"]["name"] == "test_package"
 
     def test_package_can_be_installed(
-        self, template_dir: Path, minimal_context: Dict[str, Any]
+        self, template_dir: Path, minimal_context: dict[str, Any]
     ) -> None:
         """Test that generated package can be installed."""
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -319,7 +319,7 @@ class TestGeneratedProject:
             assert result.returncode == 0, f"Installation failed: {result.stderr}"
 
     def test_generated_tests_pass(
-        self, template_dir: Path, minimal_context: Dict[str, Any]
+        self, template_dir: Path, minimal_context: dict[str, Any]
     ) -> None:
         """Test that generated tests pass."""
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -350,16 +350,16 @@ class TestGeneratedProject:
             )
 
             # Tests should pass
-            assert result.returncode == 0, (
-                f"Tests failed: {result.stdout}\n{result.stderr}"
-            )
+            assert (
+                result.returncode == 0
+            ), f"Tests failed: {result.stdout}\n{result.stderr}"
 
 
 class TestHooks:
     """Test the post-generation hooks."""
 
     def test_post_gen_hook_runs(
-        self, template_dir: Path, minimal_context: Dict[str, Any]
+        self, template_dir: Path, minimal_context: dict[str, Any]
     ) -> None:
         """Test that post-generation hook runs successfully."""
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -377,7 +377,7 @@ class TestHooks:
             assert (project_path / ".git").exists()
 
     def test_hook_removes_unused_files(
-        self, template_dir: Path, minimal_context: Dict[str, Any]
+        self, template_dir: Path, minimal_context: dict[str, Any]
     ) -> None:
         """Test that hooks remove files based on configuration."""
         context = minimal_context.copy()
@@ -406,7 +406,7 @@ class TestIntegration:
     """Integration tests (slower tests)."""
 
     def test_full_workflow(
-        self, template_dir: Path, full_context: Dict[str, Any]
+        self, template_dir: Path, full_context: dict[str, Any]
     ) -> None:
         """Test the complete workflow with all tools enabled."""
         with tempfile.TemporaryDirectory() as temp_dir:

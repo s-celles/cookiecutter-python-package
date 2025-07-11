@@ -171,7 +171,7 @@ def cookiecutter_config() -> dict[str, Any]:
     config_file = template_dir / "cookiecutter.json"
 
     with open(config_file) as f:
-        config = json.load(f)
+        config: dict[str, Any] = json.load(f)
 
     return config
 
@@ -200,7 +200,7 @@ def git_repo(temp_project_dir: Path) -> Generator[Path, None, None]:
     yield repo_path
 
 
-def pytest_configure(config):
+def pytest_configure(config: Any) -> None:
     """Configure pytest with custom markers."""
     config.addinivalue_line("markers", "slow: mark test as slow running")
     config.addinivalue_line("markers", "integration: mark test as integration test")
@@ -211,7 +211,7 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "quality: mark test as code quality-related")
 
 
-def pytest_collection_modifyitems(config, items):
+def pytest_collection_modifyitems(config: Any, items: list[Any]) -> None:
     """Modify test collection to add markers automatically."""
     for item in items:
         # Mark slow tests
