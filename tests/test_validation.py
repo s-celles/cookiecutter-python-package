@@ -138,7 +138,7 @@ class TestTemplateConsistency:
             template_dir
             / "{{cookiecutter.project_slug}}"
             / "src"
-            / "{{cookiecutter.project_slug}}"
+            / "{{cookiecutter.project_slug.replace('-', '_')}}"
             / "cli.py"
         )
 
