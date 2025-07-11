@@ -350,9 +350,9 @@ class TestGeneratedProject:
             )
 
             # Tests should pass
-            assert (
-                result.returncode == 0
-            ), f"Tests failed: {result.stdout}\n{result.stderr}"
+            assert result.returncode == 0, (
+                f"Tests failed: {result.stdout}\n{result.stderr}"
+            )
 
 
 class TestHooks:

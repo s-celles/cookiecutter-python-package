@@ -87,14 +87,12 @@ class TestPostGenHook:
             ]
 
             for file_path in files_that_should_not_exist:
-                assert not (
-                    project_path / file_path
-                ).exists(), f"{file_path} should not exist when feature is disabled"
+                assert not (project_path / file_path).exists(), (
+                    f"{file_path} should not exist when feature is disabled"
+                )
 
             # .github directory should not exist
-            assert not (
-                project_path / ".github"
-            ).exists(), (
+            assert not (project_path / ".github").exists(), (
                 ".github directory should not exist when GitHub Actions is disabled"
             )
 
@@ -155,17 +153,17 @@ class TestPostGenHook:
             ]
 
             for file_path in files_that_should_exist:
-                assert (
-                    project_path / file_path
-                ).exists(), f"{file_path} should exist when feature is enabled"
+                assert (project_path / file_path).exists(), (
+                    f"{file_path} should exist when feature is enabled"
+                )
 
             # .github directory should exist
-            assert (
-                project_path / ".github"
-            ).exists(), ".github directory should exist when GitHub Actions is enabled"
-            assert (
-                project_path / ".github" / "workflows" / "ci.yml"
-            ).exists(), "CI workflow should exist"
+            assert (project_path / ".github").exists(), (
+                ".github directory should exist when GitHub Actions is enabled"
+            )
+            assert (project_path / ".github" / "workflows" / "ci.yml").exists(), (
+                "CI workflow should exist"
+            )
 
     def test_hook_initializes_git_repo(self, template_dir: Path) -> None:
         """Test that hook initializes a git repository."""
@@ -214,9 +212,9 @@ class TestPostGenHook:
             project_path = Path(result)
 
             # Git repository should be initialized
-            assert (
-                project_path / ".git"
-            ).exists(), "Git repository should be initialized"
+            assert (project_path / ".git").exists(), (
+                "Git repository should be initialized"
+            )
 
             # Check that there's an initial commit
             result = subprocess.run(
@@ -327,6 +325,6 @@ class TestPostGenHook:
             )
 
             project_path = Path(result)
-            assert (
-                project_path.exists()
-            ), "Project should be created successfully even with special characters"
+            assert project_path.exists(), (
+                "Project should be created successfully even with special characters"
+            )

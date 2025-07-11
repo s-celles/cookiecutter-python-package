@@ -74,9 +74,9 @@ class TestPerformance:
             generation_time = end_time - start_time
 
             # Template generation should complete in under 5 seconds
-            assert (
-                generation_time < 5.0
-            ), f"Template generation took {generation_time:.2f}s, expected < 5s"
+            assert generation_time < 5.0, (
+                f"Template generation took {generation_time:.2f}s, expected < 5s"
+            )
 
             # Verify the project was created
             project_path = Path(result)
@@ -129,9 +129,9 @@ class TestPerformance:
         total_time = end_time - start_time
 
         # Should complete all 3 in under 10 seconds
-        assert (
-            total_time < 10.0
-        ), f"Concurrent generation took {total_time:.2f}s, expected < 10s"
+        assert total_time < 10.0, (
+            f"Concurrent generation took {total_time:.2f}s, expected < 10s"
+        )
 
         # All projects should be generated
         assert len(results) == 3
@@ -189,9 +189,9 @@ class TestPerformance:
             generation_time = end_time - start_time
 
             # Even large projects should generate quickly
-            assert (
-                generation_time < 10.0
-            ), f"Large project generation took {generation_time:.2f}s, expected < 10s"
+            assert generation_time < 10.0, (
+                f"Large project generation took {generation_time:.2f}s, expected < 10s"
+            )
 
             project_path = Path(result)
             assert project_path.exists()

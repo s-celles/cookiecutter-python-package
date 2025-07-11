@@ -89,9 +89,9 @@ class TestSecurity:
                     content = file_path.read_text(encoding="utf-8")
                     for pattern in secret_patterns:
                         matches = re.findall(pattern, content, re.IGNORECASE)
-                        assert (
-                            not matches
-                        ), f"Potential secret found in {file_path}: {matches}"
+                        assert not matches, (
+                            f"Potential secret found in {file_path}: {matches}"
+                        )
                 except (UnicodeDecodeError, PermissionError):
                     # Skip binary files or files we can't read
                     continue
@@ -116,25 +116,25 @@ class TestSecurity:
                     content = workflow_file.read_text(encoding="utf-8")
 
                     # Check for security best practices
-                    assert (
-                        "permissions:" in content
-                    ), f"Workflow {workflow_file.name} should specify permissions"
+                    assert "permissions:" in content, (
+                        f"Workflow {workflow_file.name} should specify permissions"
+                    )
 
                     # Should not use deprecated actions
-                    assert (
-                        "actions/checkout@v1" not in content
-                    ), "Should use latest checkout action"
-                    assert (
-                        "actions/setup-python@v1" not in content
-                    ), "Should use latest setup-python action"
+                    assert "actions/checkout@v1" not in content, (
+                        "Should use latest checkout action"
+                    )
+                    assert "actions/setup-python@v1" not in content, (
+                        "Should use latest setup-python action"
+                    )
 
                     # Should pin action versions
                     action_refs = re.findall(r"uses:\s*([^@\s]+)@([^\s]+)", content)
                     for action, ref in action_refs:
                         if not action.startswith("./"):  # Skip local actions
-                            assert (
-                                ref != "main" and ref != "master"
-                            ), f"Action {action} should be pinned to specific version, not {ref}"
+                            assert ref != "main" and ref != "master", (
+                                f"Action {action} should be pinned to specific version, not {ref}"
+                            )
 
     def test_dependency_security(
         self, template_dir: Path, secure_context: dict[str, Any]
@@ -192,9 +192,9 @@ class TestSecurity:
             )
 
             # Should pass security checks
-            assert (
-                result.returncode == 0
-            ), f"Bandit security check failed: {result.stdout}\n{result.stderr}"
+            assert result.returncode == 0, (
+                f"Bandit security check failed: {result.stdout}\n{result.stderr}"
+            )
 
 
 class TestQuality:
@@ -268,9 +268,9 @@ class TestQuality:
                     if line.strip() and line.startswith(" "):
                         # Count leading spaces
                         leading_spaces = len(line) - len(line.lstrip(" "))
-                        assert (
-                            leading_spaces % 4 == 0
-                        ), f"Inconsistent indentation in {py_file}:{line_num}"
+                        assert leading_spaces % 4 == 0, (
+                            f"Inconsistent indentation in {py_file}:{line_num}"
+                        )
 
                 # Check for consistent quotes (should prefer double quotes for Ruff)
                 # This is a basic check - Ruff will do more thorough formatting
@@ -295,25 +295,25 @@ class TestQuality:
 
             readme_content = readme_file.read_text(encoding="utf-8")
             assert len(readme_content) > 100, "README should have substantial content"
-            assert (
-                "# Test Package" in readme_content
-            ), "README should have project title"
-            assert (
-                "## Installation" in readme_content
-            ), "README should have installation instructions"
+            assert "# Test Package" in readme_content, (
+                "README should have project title"
+            )
+            assert "## Installation" in readme_content, (
+                "README should have installation instructions"
+            )
             assert "## Usage" in readme_content, "README should have usage examples"
 
             # Check for documentation files when enabled
             if quality_context["create_contributing"] == "y":
                 contributing_file = project_path / "CONTRIBUTING.md"
-                assert (
-                    contributing_file.exists()
-                ), "CONTRIBUTING.md should exist when enabled"
+                assert contributing_file.exists(), (
+                    "CONTRIBUTING.md should exist when enabled"
+                )
 
                 contributing_content = contributing_file.read_text(encoding="utf-8")
-                assert (
-                    "# Contributing" in contributing_content
-                ), "CONTRIBUTING should have proper header"
+                assert "# Contributing" in contributing_content, (
+                    "CONTRIBUTING should have proper header"
+                )
 
             if quality_context["create_changelog"] == "y":
                 changelog_file = project_path / "CHANGELOG.md"
@@ -335,9 +335,9 @@ class TestQuality:
 
             # Check that py.typed marker exists
             py_typed_file = project_path / "src" / "test_package" / "py.typed"
-            assert (
-                py_typed_file.exists()
-            ), "py.typed marker should exist for type checking support"
+            assert py_typed_file.exists(), (
+                "py.typed marker should exist for type checking support"
+            )
 
             # Check main module files for type hints
             core_file = project_path / "src" / "test_package" / "core.py"
@@ -357,9 +357,9 @@ class TestQuality:
                 for line in function_lines:
                     if not line.strip().startswith("#") and "def __" not in line:
                         # Public functions should have type hints
-                        assert "->" in line or line.endswith(
-                            ":"
-                        ), f"Function should have return type hint: {line}"
+                        assert "->" in line or line.endswith(":"), (
+                            f"Function should have return type hint: {line}"
+                        )
 
     def test_test_coverage_setup(
         self, template_dir: Path, quality_context: dict[str, Any]
@@ -382,9 +382,9 @@ class TestQuality:
                 # Should have coverage configuration
                 assert "[tool.coverage" in content, "Should have coverage configuration"
                 assert "source = " in content, "Should specify coverage source"
-                assert (
-                    "omit = " in content
-                ), "Should specify files to omit from coverage"
+                assert "omit = " in content, (
+                    "Should specify files to omit from coverage"
+                )
 
     def test_linting_configuration(
         self, template_dir: Path, quality_context: dict[str, Any]
@@ -410,9 +410,9 @@ class TestQuality:
 
             if quality_context["use_mypy"] == "y":
                 assert "[tool.mypy" in content, "Should have MyPy configuration"
-                assert (
-                    "python_version = " in content
-                ), "Should specify Python version for MyPy"
+                assert "python_version = " in content, (
+                    "Should specify Python version for MyPy"
+                )
 
 
 class TestAccessibility:
@@ -453,9 +453,9 @@ class TestAccessibility:
 
         for field in choice_fields:
             if field in config and isinstance(config[field], list):
-                assert (
-                    len(config[field]) > 1
-                ), f"Choice field {field} should have multiple options"
+                assert len(config[field]) > 1, (
+                    f"Choice field {field} should have multiple options"
+                )
 
                 # First option should be reasonable default
                 first_option = config[field][0]
@@ -469,9 +469,9 @@ class TestAccessibility:
             content = hook_file.read_text(encoding="utf-8")
 
             # Should have error handling
-            assert (
-                "try:" in content or "except" in content
-            ), "Hooks should include error handling"
+            assert "try:" in content or "except" in content, (
+                "Hooks should include error handling"
+            )
 
             # Should provide helpful messages
             assert "print(" in content, "Hooks should provide user feedback"

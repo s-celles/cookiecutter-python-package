@@ -49,9 +49,9 @@ class TestTemplateValidation:
 
         for field in choice_fields:
             if field in config:
-                assert isinstance(
-                    config[field], list
-                ), f"{field} should be a list of choices"
+                assert isinstance(config[field], list), (
+                    f"{field} should be a list of choices"
+                )
 
     def test_jinja_template_syntax(self) -> None:
         """Test that Jinja templates have valid syntax."""
@@ -117,14 +117,14 @@ class TestTemplateConsistency:
             if license_type != "Proprietary":
                 # For SPDX format, check if license is in template variable or explicit
                 if license_type in ["MIT", "BSD-3-Clause"]:
-                    assert (
-                        license_type in license_content
-                    ), f"License {license_type} not found in template"
+                    assert license_type in license_content, (
+                        f"License {license_type} not found in template"
+                    )
                 else:
                     # SPDX fallback handles other licenses
-                    assert (
-                        "{{ cookiecutter.license }}" in license_content
-                    ), f"Template should handle {license_type} via SPDX"
+                    assert "{{ cookiecutter.license }}" in license_content, (
+                        f"Template should handle {license_type} via SPDX"
+                    )
 
     def test_cli_options_consistency(self) -> None:
         """Test that CLI options are consistently handled."""
@@ -147,9 +147,9 @@ class TestTemplateConsistency:
         # Check that all CLI options are handled in the template
         for cli_option in cli_options:
             if cli_option != "none":
-                assert (
-                    cli_option in cli_content
-                ), f"CLI option {cli_option} not handled in template"
+                assert cli_option in cli_content, (
+                    f"CLI option {cli_option} not handled in template"
+                )
 
     def test_pyproject_toml_dependencies(self) -> None:
         """Test that pyproject.toml includes correct dependencies for CLI options."""
@@ -267,9 +267,9 @@ class TestGeneratedProjectQuality:
             text=True,
         )
 
-        assert (
-            result.returncode == 0
-        ), f"Ruff check failed: {result.stdout}\n{result.stderr}"
+        assert result.returncode == 0, (
+            f"Ruff check failed: {result.stdout}\n{result.stderr}"
+        )
 
     def test_mypy_passes_on_generated_project(self, generated_project: Path) -> None:
         """Test that MyPy passes on generated project."""
