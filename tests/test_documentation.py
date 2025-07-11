@@ -22,7 +22,7 @@ class TestDocumentation:
         readme_file = template_dir / "README.md"
         assert readme_file.exists(), "Template should have README.md"
 
-        content = readme_file.read_text(encoding='utf-8')
+        content = readme_file.read_text(encoding="utf-8")
 
         # Check for required sections
         required_sections = [
@@ -41,12 +41,19 @@ class TestDocumentation:
         tools_guide = template_dir / "TOOLS_GUIDE.md"
         assert tools_guide.exists(), "Should have TOOLS_GUIDE.md"
 
-        content = tools_guide.read_text(encoding='utf-8')
+        content = tools_guide.read_text(encoding="utf-8")
 
         # Check for all major tools
         major_tools = [
-            "pytest", "ruff", "mypy", "bandit", "safety",
-            "pre-commit", "GitHub Actions", "MkDocs", "Sphinx"
+            "pytest",
+            "ruff",
+            "mypy",
+            "bandit",
+            "safety",
+            "pre-commit",
+            "GitHub Actions",
+            "MkDocs",
+            "Sphinx",
         ]
 
         for tool in major_tools:
@@ -62,7 +69,7 @@ class TestDocumentation:
             pytest.skip("TEMPLATE_SUMMARY.md not found")
 
         summary_file = template_dir / "TEMPLATE_SUMMARY.md"
-        content = summary_file.read_text(encoding='utf-8')
+        content = summary_file.read_text(encoding="utf-8")
 
         # Should mention key features
         key_features = ["pyproject.toml", "src layout", "pytest", "CI/CD"]
@@ -81,17 +88,26 @@ class TestDocumentation:
 
         # Check that boolean options have reasonable defaults
         boolean_options = [
-            "use_ruff", "use_mypy", "use_pytest", "use_coverage",
-            "use_pre_commit", "use_bandit", "use_safety"
+            "use_ruff",
+            "use_mypy",
+            "use_pytest",
+            "use_coverage",
+            "use_pre_commit",
+            "use_bandit",
+            "use_safety",
         ]
 
         for option in boolean_options:
             if option in config:
                 # Options can be either string or list format
                 if isinstance(config[option], list):
-                    assert "y" in config[option] and "n" in config[option], f"{option} should have 'y' and 'n' options"
+                    assert "y" in config[option] and "n" in config[option], (
+                        f"{option} should have 'y' and 'n' options"
+                    )
                 else:
-                    assert config[option] in ["y", "n"], f"{option} should be 'y' or 'n'"
+                    assert config[option] in ["y", "n"], (
+                        f"{option} should be 'y' or 'n'"
+                    )
 
     def test_generated_project_documentation(self, template_dir: Path) -> None:
         """Test that generated projects have good documentation."""
@@ -126,7 +142,7 @@ class TestDocumentation:
             "create_contributing": "y",
             "create_code_of_conduct": "y",
             "use_docker": "n",
-            "use_devcontainer": "n"
+            "use_devcontainer": "n",
         }
 
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -134,14 +150,14 @@ class TestDocumentation:
                 str(template_dir),
                 no_input=True,
                 extra_context=context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
 
             # Check README content
             readme_file = project_path / "README.md"
-            readme_content = readme_file.read_text(encoding='utf-8')
+            readme_content = readme_file.read_text(encoding="utf-8")
 
             # Should have project-specific content
             assert context["project_name"] in readme_content
@@ -159,7 +175,7 @@ class TestDocumentation:
                 contributing_file = project_path / "CONTRIBUTING.md"
                 assert contributing_file.exists()
 
-                contributing_content = contributing_file.read_text(encoding='utf-8')
+                contributing_content = contributing_file.read_text(encoding="utf-8")
                 assert "Contributing" in contributing_content
                 assert "development" in contributing_content.lower()
 
@@ -168,8 +184,10 @@ class TestDocumentation:
                 changelog_file = project_path / "CHANGELOG.md"
                 assert changelog_file.exists()
 
-                changelog_content = changelog_file.read_text(encoding='utf-8')
-                assert "Changelog" in changelog_content or "CHANGELOG" in changelog_content
+                changelog_content = changelog_file.read_text(encoding="utf-8")
+                assert (
+                    "Changelog" in changelog_content or "CHANGELOG" in changelog_content
+                )
                 assert context["version"] in changelog_content
 
     def test_code_examples_validity(self, template_dir: Path) -> None:
@@ -178,28 +196,32 @@ class TestDocumentation:
         tools_guide = template_dir / "TOOLS_GUIDE.md"
 
         if tools_guide.exists():
-            content = tools_guide.read_text(encoding='utf-8')
+            content = tools_guide.read_text(encoding="utf-8")
 
             # Extract Python code blocks
-            python_blocks = re.findall(r'```python\n(.*?)\n```', content, re.DOTALL)
+            python_blocks = re.findall(r"```python\n(.*?)\n```", content, re.DOTALL)
 
             for i, code_block in enumerate(python_blocks):
                 try:
                     # Try to compile the code (syntax check)
                     compile(code_block, f"<tools_guide_example_{i}>", "exec")
                 except SyntaxError as e:
-                    pytest.fail(f"Invalid Python syntax in TOOLS_GUIDE.md example {i}: {e}")
+                    pytest.fail(
+                        f"Invalid Python syntax in TOOLS_GUIDE.md example {i}: {e}"
+                    )
 
             # Extract bash/shell code blocks and check for common issues
-            bash_blocks = re.findall(r'```bash\n(.*?)\n```', content, re.DOTALL)
+            bash_blocks = re.findall(r"```bash\n(.*?)\n```", content, re.DOTALL)
 
             for i, code_block in enumerate(bash_blocks):
                 # Check for common shell issues
-                lines = code_block.strip().split('\n')
+                lines = code_block.strip().split("\n")
                 for line in lines:
                     if line.strip():
                         # Should not have Windows-style paths in bash examples
-                        assert not re.match(r'[A-Z]:\\', line), f"Windows path in bash example: {line}"
+                        assert not re.match(r"[A-Z]:\\", line), (
+                            f"Windows path in bash example: {line}"
+                        )
 
     def test_template_examples_work(self, template_dir: Path) -> None:
         """Test that examples in template documentation actually work."""
@@ -235,7 +257,7 @@ class TestDocumentation:
             "create_contributing": "n",
             "create_code_of_conduct": "n",
             "use_docker": "n",
-            "use_devcontainer": "n"
+            "use_devcontainer": "n",
         }
 
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -243,7 +265,7 @@ class TestDocumentation:
                 str(template_dir),
                 no_input=True,
                 extra_context=context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
@@ -251,7 +273,9 @@ class TestDocumentation:
             # Project should be created successfully
             assert project_path.exists()
             assert (project_path / "pyproject.toml").exists()
-            assert (project_path / "src" / "my_awesome_package" / "__init__.py").exists()
+            assert (
+                project_path / "src" / "my_awesome_package" / "__init__.py"
+            ).exists()
 
     def test_license_documentation(self, template_dir: Path) -> None:
         """Test that license options are properly documented."""
@@ -269,24 +293,30 @@ class TestDocumentation:
             common_licenses = ["MIT", "Apache-2.0", "BSD-3-Clause"]
 
             for license_type in common_licenses:
-                assert license_type in license_options, f"Should support {license_type} license"
+                assert license_type in license_options, (
+                    f"Should support {license_type} license"
+                )
 
             # Test that license template works for each option
             project_template = template_dir / "{{cookiecutter.project_slug}}"
             license_template = project_template / "LICENSE"
 
             if license_template.exists():
-                license_content = license_template.read_text(encoding='utf-8')
+                license_content = license_template.read_text(encoding="utf-8")
 
                 # Should have conditional content for different licenses
                 for license_type in license_options:
                     if license_type != "Proprietary":
                         # For SPDX format, check if license is in template variable or explicit
                         if license_type in ["MIT", "BSD-3-Clause"]:
-                            assert license_type in license_content, f"License template should handle {license_type}"
+                            assert license_type in license_content, (
+                                f"License template should handle {license_type}"
+                            )
                         else:
                             # SPDX fallback handles other licenses
-                            assert "{{ cookiecutter.license }}" in license_content, f"Template should handle {license_type} via SPDX"
+                            assert "{{ cookiecutter.license }}" in license_content, (
+                                f"Template should handle {license_type} via SPDX"
+                            )
 
 
 class TestExamples:
@@ -297,27 +327,56 @@ class TestExamples:
         """Return the path to the template directory."""
         return Path(__file__).parent.parent
 
-    @pytest.mark.parametrize("config_name,config", [
-        ("minimal", {
-            "use_ruff": "n", "use_mypy": "n", "use_github_actions": "n",
-            "command_line_interface": "none"
-        }),
-        ("basic", {
-            "use_ruff": "y", "use_mypy": "n", "use_github_actions": "n",
-            "command_line_interface": "typer"
-        }),
-        ("quality", {
-            "use_ruff": "y", "use_mypy": "y", "use_coverage": "y",
-            "use_pre_commit": "y", "command_line_interface": "typer"
-        }),
-        ("enterprise", {
-            "use_ruff": "y", "use_mypy": "y", "use_coverage": "y",
-            "use_pre_commit": "y", "use_bandit": "y", "use_safety": "y",
-            "use_github_actions": "y", "use_dependabot": "y",
-            "command_line_interface": "typer"
-        })
-    ])
-    def test_example_configurations(self, template_dir: Path, config_name: str, config: Dict[str, str]) -> None:
+    @pytest.mark.parametrize(
+        "config_name,config",
+        [
+            (
+                "minimal",
+                {
+                    "use_ruff": "n",
+                    "use_mypy": "n",
+                    "use_github_actions": "n",
+                    "command_line_interface": "none",
+                },
+            ),
+            (
+                "basic",
+                {
+                    "use_ruff": "y",
+                    "use_mypy": "n",
+                    "use_github_actions": "n",
+                    "command_line_interface": "typer",
+                },
+            ),
+            (
+                "quality",
+                {
+                    "use_ruff": "y",
+                    "use_mypy": "y",
+                    "use_coverage": "y",
+                    "use_pre_commit": "y",
+                    "command_line_interface": "typer",
+                },
+            ),
+            (
+                "enterprise",
+                {
+                    "use_ruff": "y",
+                    "use_mypy": "y",
+                    "use_coverage": "y",
+                    "use_pre_commit": "y",
+                    "use_bandit": "y",
+                    "use_safety": "y",
+                    "use_github_actions": "y",
+                    "use_dependabot": "y",
+                    "command_line_interface": "typer",
+                },
+            ),
+        ],
+    )
+    def test_example_configurations(
+        self, template_dir: Path, config_name: str, config: Dict[str, str]
+    ) -> None:
         """Test different example configurations work correctly."""
         base_context = {
             "full_name": "Test User",
@@ -351,7 +410,7 @@ class TestExamples:
             "create_contributing": "n",
             "create_code_of_conduct": "n",
             "use_docker": "n",
-            "use_devcontainer": "n"
+            "use_devcontainer": "n",
         }
 
         # Override with specific config
@@ -362,7 +421,7 @@ class TestExamples:
                 str(template_dir),
                 no_input=True,
                 extra_context=context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
@@ -371,12 +430,12 @@ class TestExamples:
             # Check that enabled features have their files
             if config.get("use_ruff") == "y":
                 pyproject_file = project_path / "pyproject.toml"
-                content = pyproject_file.read_text(encoding='utf-8')
+                content = pyproject_file.read_text(encoding="utf-8")
                 assert "[tool.ruff" in content, "Ruff config should be present"
 
             if config.get("use_mypy") == "y":
                 pyproject_file = project_path / "pyproject.toml"
-                content = pyproject_file.read_text(encoding='utf-8')
+                content = pyproject_file.read_text(encoding="utf-8")
                 assert "[tool.mypy" in content, "MyPy config should be present"
 
             if config.get("use_github_actions") == "y":
@@ -386,4 +445,3 @@ class TestExamples:
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
-

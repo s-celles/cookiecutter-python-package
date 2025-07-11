@@ -51,7 +51,7 @@ def minimal_context() -> Dict[str, Any]:
         "create_contributing": "n",
         "create_code_of_conduct": "n",
         "use_docker": "n",
-        "use_devcontainer": "n"
+        "use_devcontainer": "n",
     }
 
 
@@ -89,7 +89,7 @@ def full_context() -> Dict[str, Any]:
         "create_contributing": "y",
         "create_code_of_conduct": "y",
         "use_docker": "y",
-        "use_devcontainer": "y"
+        "use_devcontainer": "y",
     }
 
 
@@ -112,8 +112,11 @@ class TestTemplateStructure:
 
         # Check required fields
         required_fields = [
-            "full_name", "email", "github_username",
-            "project_name", "project_slug"
+            "full_name",
+            "email",
+            "github_username",
+            "project_name",
+            "project_slug",
         ]
         for field in required_fields:
             assert field in config
@@ -156,14 +159,16 @@ class TestTemplateStructure:
 class TestProjectGeneration:
     """Test actual project generation."""
 
-    def test_minimal_generation(self, template_dir: Path, minimal_context: Dict[str, Any]) -> None:
+    def test_minimal_generation(
+        self, template_dir: Path, minimal_context: Dict[str, Any]
+    ) -> None:
         """Test generating a project with minimal options."""
         with tempfile.TemporaryDirectory() as temp_dir:
             result = cookiecutter(
                 str(template_dir),
                 no_input=True,
                 extra_context=minimal_context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
@@ -171,14 +176,16 @@ class TestProjectGeneration:
             assert (project_path / "pyproject.toml").exists()
             assert (project_path / "src" / "test_package" / "__init__.py").exists()
 
-    def test_full_generation(self, template_dir: Path, full_context: Dict[str, Any]) -> None:
+    def test_full_generation(
+        self, template_dir: Path, full_context: Dict[str, Any]
+    ) -> None:
         """Test generating a project with all options enabled."""
         with tempfile.TemporaryDirectory() as temp_dir:
             result = cookiecutter(
                 str(template_dir),
                 no_input=True,
                 extra_context=full_context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
@@ -193,7 +200,9 @@ class TestProjectGeneration:
             assert (project_path / "CONTRIBUTING.md").exists()
 
     @pytest.mark.parametrize("cli_option", ["typer", "click", "argparse", "none"])
-    def test_cli_options(self, template_dir: Path, minimal_context: Dict[str, Any], cli_option: str) -> None:
+    def test_cli_options(
+        self, template_dir: Path, minimal_context: Dict[str, Any], cli_option: str
+    ) -> None:
         """Test different CLI framework options."""
         context = minimal_context.copy()
         context["command_line_interface"] = cli_option
@@ -203,14 +212,14 @@ class TestProjectGeneration:
                 str(template_dir),
                 no_input=True,
                 extra_context=context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
             cli_file = project_path / "src" / "test_package" / "cli.py"
 
             assert cli_file.exists()
-            cli_content = cli_file.read_text(encoding='utf-8')
+            cli_content = cli_file.read_text(encoding="utf-8")
 
             if cli_option == "typer":
                 assert "import typer" in cli_content
@@ -222,7 +231,9 @@ class TestProjectGeneration:
                 assert "No command line interface" in cli_content
 
     @pytest.mark.parametrize("license_type", ["MIT", "Apache-2.0", "BSD-3-Clause"])
-    def test_license_options(self, template_dir: Path, minimal_context: Dict[str, Any], license_type: str) -> None:
+    def test_license_options(
+        self, template_dir: Path, minimal_context: Dict[str, Any], license_type: str
+    ) -> None:
         """Test different license options."""
         context = minimal_context.copy()
         context["license"] = license_type
@@ -232,14 +243,14 @@ class TestProjectGeneration:
                 str(template_dir),
                 no_input=True,
                 extra_context=context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
             license_file = project_path / "LICENSE"
 
             assert license_file.exists()
-            license_content = license_file.read_text(encoding='utf-8')
+            license_content = license_file.read_text(encoding="utf-8")
 
             if license_type == "MIT":
                 assert "MIT License" in license_content
@@ -252,14 +263,16 @@ class TestProjectGeneration:
 class TestGeneratedProject:
     """Test that generated projects work correctly."""
 
-    def test_pyproject_toml_is_valid(self, template_dir: Path, minimal_context: Dict[str, Any]) -> None:
+    def test_pyproject_toml_is_valid(
+        self, template_dir: Path, minimal_context: Dict[str, Any]
+    ) -> None:
         """Test that generated pyproject.toml is valid."""
         with tempfile.TemporaryDirectory() as temp_dir:
             result = cookiecutter(
                 str(template_dir),
                 no_input=True,
                 extra_context=minimal_context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
@@ -279,14 +292,16 @@ class TestGeneratedProject:
             assert "project" in config
             assert config["project"]["name"] == "test_package"
 
-    def test_package_can_be_installed(self, template_dir: Path, minimal_context: Dict[str, Any]) -> None:
+    def test_package_can_be_installed(
+        self, template_dir: Path, minimal_context: Dict[str, Any]
+    ) -> None:
         """Test that generated package can be installed."""
         with tempfile.TemporaryDirectory() as temp_dir:
             result = cookiecutter(
                 str(template_dir),
                 no_input=True,
                 extra_context=minimal_context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
@@ -294,22 +309,25 @@ class TestGeneratedProject:
             # Try to install the package in development mode
             result = subprocess.run(
                 [sys.executable, "-m", "pip", "install", "-e", "."],
-                check=False, cwd=project_path,
+                check=False,
+                cwd=project_path,
                 capture_output=True,
-                text=True
+                text=True,
             )
 
             # Installation should succeed
             assert result.returncode == 0, f"Installation failed: {result.stderr}"
 
-    def test_generated_tests_pass(self, template_dir: Path, minimal_context: Dict[str, Any]) -> None:
+    def test_generated_tests_pass(
+        self, template_dir: Path, minimal_context: Dict[str, Any]
+    ) -> None:
         """Test that generated tests pass."""
         with tempfile.TemporaryDirectory() as temp_dir:
             result = cookiecutter(
                 str(template_dir),
                 no_input=True,
                 extra_context=minimal_context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
@@ -317,26 +335,32 @@ class TestGeneratedProject:
             # Install the package first
             subprocess.run(
                 [sys.executable, "-m", "pip", "install", "-e", ".[dev]"],
-                check=False, cwd=project_path,
-                capture_output=True
+                check=False,
+                cwd=project_path,
+                capture_output=True,
             )
 
             # Run the tests
             result = subprocess.run(
                 [sys.executable, "-m", "pytest", "-v"],
-                check=False, cwd=project_path,
+                check=False,
+                cwd=project_path,
                 capture_output=True,
-                text=True
+                text=True,
             )
 
             # Tests should pass
-            assert result.returncode == 0, f"Tests failed: {result.stdout}\n{result.stderr}"
+            assert result.returncode == 0, (
+                f"Tests failed: {result.stdout}\n{result.stderr}"
+            )
 
 
 class TestHooks:
     """Test the post-generation hooks."""
 
-    def test_post_gen_hook_runs(self, template_dir: Path, minimal_context: Dict[str, Any]) -> None:
+    def test_post_gen_hook_runs(
+        self, template_dir: Path, minimal_context: Dict[str, Any]
+    ) -> None:
         """Test that post-generation hook runs successfully."""
         with tempfile.TemporaryDirectory() as temp_dir:
             # The hook should run automatically during generation
@@ -344,7 +368,7 @@ class TestHooks:
                 str(template_dir),
                 no_input=True,
                 extra_context=minimal_context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
@@ -352,7 +376,9 @@ class TestHooks:
             # Check that git repo was initialized
             assert (project_path / ".git").exists()
 
-    def test_hook_removes_unused_files(self, template_dir: Path, minimal_context: Dict[str, Any]) -> None:
+    def test_hook_removes_unused_files(
+        self, template_dir: Path, minimal_context: Dict[str, Any]
+    ) -> None:
         """Test that hooks remove files based on configuration."""
         context = minimal_context.copy()
         context["use_pre_commit"] = "n"
@@ -364,7 +390,7 @@ class TestHooks:
                 str(template_dir),
                 no_input=True,
                 extra_context=context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
@@ -379,14 +405,16 @@ class TestHooks:
 class TestIntegration:
     """Integration tests (slower tests)."""
 
-    def test_full_workflow(self, template_dir: Path, full_context: Dict[str, Any]) -> None:
+    def test_full_workflow(
+        self, template_dir: Path, full_context: Dict[str, Any]
+    ) -> None:
         """Test the complete workflow with all tools enabled."""
         with tempfile.TemporaryDirectory() as temp_dir:
             result = cookiecutter(
                 str(template_dir),
                 no_input=True,
                 extra_context=full_context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
@@ -394,42 +422,50 @@ class TestIntegration:
             # Install dependencies
             subprocess.run(
                 [sys.executable, "-m", "pip", "install", "-e", ".[dev]"],
-                check=False, cwd=project_path,
-                capture_output=True
+                check=False,
+                cwd=project_path,
+                capture_output=True,
             )
 
             # Auto-fix Ruff issues first
             subprocess.run(
                 [sys.executable, "-m", "ruff", "check", "--fix", "."],
-                check=False, cwd=project_path,
-                capture_output=True
+                check=False,
+                cwd=project_path,
+                capture_output=True,
             )
 
             # Auto-format with Ruff
             subprocess.run(
                 [sys.executable, "-m", "ruff", "format", "."],
-                check=False, cwd=project_path,
-                capture_output=True
+                check=False,
+                cwd=project_path,
+                capture_output=True,
             )
 
             # Run various tools
             tools_to_test = [
                 ([sys.executable, "-m", "pytest"], "Tests should pass"),
-                ([sys.executable, "-m", "ruff", "check", "."], "Ruff check should pass"),
-                ([sys.executable, "-m", "ruff", "format", "--check", "."], "Ruff format should pass"),
-                ([sys.executable, "-m", "mypy", "src/test_package"], "MyPy should pass"),
+                (
+                    [sys.executable, "-m", "ruff", "check", "."],
+                    "Ruff check should pass",
+                ),
+                (
+                    [sys.executable, "-m", "ruff", "format", "--check", "."],
+                    "Ruff format should pass",
+                ),
+                (
+                    [sys.executable, "-m", "mypy", "src/test_package"],
+                    "MyPy should pass",
+                ),
             ]
 
             for cmd, description in tools_to_test:
                 result = subprocess.run(
-                    cmd,
-                    check=False, cwd=project_path,
-                    capture_output=True,
-                    text=True
+                    cmd, check=False, cwd=project_path, capture_output=True, text=True
                 )
                 assert result.returncode == 0, f"{description}: {result.stderr}"
 
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
-

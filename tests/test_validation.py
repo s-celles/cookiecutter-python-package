@@ -24,9 +24,14 @@ class TestTemplateValidation:
 
         # Required string fields
         required_strings = [
-            "full_name", "email", "github_username",
-            "project_name", "project_slug", "project_short_description",
-            "version", "python_requires"
+            "full_name",
+            "email",
+            "github_username",
+            "project_name",
+            "project_slug",
+            "project_short_description",
+            "version",
+            "python_requires",
         ]
 
         for field in required_strings:
@@ -35,13 +40,18 @@ class TestTemplateValidation:
 
         # Choice fields should be lists
         choice_fields = [
-            "license", "command_line_interface",
-            "use_ruff", "use_mypy", "use_pytest"
+            "license",
+            "command_line_interface",
+            "use_ruff",
+            "use_mypy",
+            "use_pytest",
         ]
 
         for field in choice_fields:
             if field in config:
-                assert isinstance(config[field], list), f"{field} should be a list of choices"
+                assert isinstance(config[field], list), (
+                    f"{field} should be a list of choices"
+                )
 
     def test_jinja_template_syntax(self) -> None:
         """Test that Jinja templates have valid syntax."""
@@ -55,7 +65,7 @@ class TestTemplateValidation:
 
         # Basic syntax check - look for unmatched braces
         for template_file in template_files:
-            content = template_file.read_text(encoding='utf-8')
+            content = template_file.read_text(encoding="utf-8")
 
             # Count braces
             open_braces = content.count("{{")
@@ -80,7 +90,7 @@ class TestTemplateValidation:
                 content = f.read()
 
             try:
-                compile(content, str(py_file), 'exec')
+                compile(content, str(py_file), "exec")
             except SyntaxError as e:
                 pytest.fail(f"Syntax error in {py_file}: {e}")
 
@@ -100,17 +110,21 @@ class TestTemplateConsistency:
         license_template = template_dir / "{{cookiecutter.project_slug}}" / "LICENSE"
 
         # Read the license template
-        license_content = license_template.read_text(encoding='utf-8')
+        license_content = license_template.read_text(encoding="utf-8")
 
         # Check that all license types are handled
         for license_type in license_options:
             if license_type != "Proprietary":
                 # For SPDX format, check if license is in template variable or explicit
                 if license_type in ["MIT", "BSD-3-Clause"]:
-                    assert license_type in license_content, f"License {license_type} not found in template"
+                    assert license_type in license_content, (
+                        f"License {license_type} not found in template"
+                    )
                 else:
                     # SPDX fallback handles other licenses
-                    assert "{{ cookiecutter.license }}" in license_content, f"Template should handle {license_type} via SPDX"
+                    assert "{{ cookiecutter.license }}" in license_content, (
+                        f"Template should handle {license_type} via SPDX"
+                    )
 
     def test_cli_options_consistency(self) -> None:
         """Test that CLI options are consistently handled."""
@@ -120,21 +134,31 @@ class TestTemplateConsistency:
             config = json.load(f)
 
         cli_options = config["command_line_interface"]
-        cli_template = template_dir / "{{cookiecutter.project_slug}}" / "src" / "{{cookiecutter.project_slug}}" / "cli.py"
+        cli_template = (
+            template_dir
+            / "{{cookiecutter.project_slug}}"
+            / "src"
+            / "{{cookiecutter.project_slug}}"
+            / "cli.py"
+        )
 
-        cli_content = cli_template.read_text(encoding='utf-8')
+        cli_content = cli_template.read_text(encoding="utf-8")
 
         # Check that all CLI options are handled in the template
         for cli_option in cli_options:
             if cli_option != "none":
-                assert cli_option in cli_content, f"CLI option {cli_option} not handled in template"
+                assert cli_option in cli_content, (
+                    f"CLI option {cli_option} not handled in template"
+                )
 
     def test_pyproject_toml_dependencies(self) -> None:
         """Test that pyproject.toml includes correct dependencies for CLI options."""
         template_dir = Path(__file__).parent.parent
-        pyproject_template = template_dir / "{{cookiecutter.project_slug}}" / "pyproject.toml"
+        pyproject_template = (
+            template_dir / "{{cookiecutter.project_slug}}" / "pyproject.toml"
+        )
 
-        content = pyproject_template.read_text(encoding='utf-8')
+        content = pyproject_template.read_text(encoding="utf-8")
 
         # Check that CLI dependencies are conditionally included
         assert "typer" in content
@@ -154,8 +178,8 @@ class TestTemplateConsistency:
         assert project_readme.exists()
 
         # Both should mention the key features
-        main_content = main_readme.read_text(encoding='utf-8')
-        project_content = project_readme.read_text(encoding='utf-8')
+        main_content = main_readme.read_text(encoding="utf-8")
+        project_content = project_readme.read_text(encoding="utf-8")
 
         # Main README should be comprehensive
         assert "cookiecutter" in main_content.lower()
@@ -204,7 +228,7 @@ class TestGeneratedProjectQuality:
             "create_contributing": "n",
             "create_code_of_conduct": "n",
             "use_docker": "n",
-            "use_devcontainer": "n"
+            "use_devcontainer": "n",
         }
 
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -212,7 +236,7 @@ class TestGeneratedProjectQuality:
                 str(template_dir),
                 no_input=True,
                 extra_context=context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
             yield Path(result)
 
@@ -221,42 +245,49 @@ class TestGeneratedProjectQuality:
         # Install dependencies first
         subprocess.run(
             [sys.executable, "-m", "pip", "install", "-e", ".[dev]"],
-            check=False, cwd=generated_project,
-            capture_output=True
+            check=False,
+            cwd=generated_project,
+            capture_output=True,
         )
 
         # Run Ruff fix first to auto-format
         subprocess.run(
             [sys.executable, "-m", "ruff", "check", "--fix", "src", "tests"],
-            check=False, cwd=generated_project,
-            capture_output=True
+            check=False,
+            cwd=generated_project,
+            capture_output=True,
         )
 
         # Run Ruff check to verify no issues remain
         result = subprocess.run(
             [sys.executable, "-m", "ruff", "check", "src", "tests"],
-            check=False, cwd=generated_project,
+            check=False,
+            cwd=generated_project,
             capture_output=True,
-            text=True
+            text=True,
         )
 
-        assert result.returncode == 0, f"Ruff check failed: {result.stdout}\n{result.stderr}"
+        assert result.returncode == 0, (
+            f"Ruff check failed: {result.stdout}\n{result.stderr}"
+        )
 
     def test_mypy_passes_on_generated_project(self, generated_project: Path) -> None:
         """Test that MyPy passes on generated project."""
         # Install dependencies first
         subprocess.run(
             [sys.executable, "-m", "pip", "install", "-e", ".[dev]"],
-            check=False, cwd=generated_project,
-            capture_output=True
+            check=False,
+            cwd=generated_project,
+            capture_output=True,
         )
 
         # Run MyPy
         result = subprocess.run(
             [sys.executable, "-m", "mypy", "src/test_package"],
-            check=False, cwd=generated_project,
+            check=False,
+            cwd=generated_project,
             capture_output=True,
-            text=True
+            text=True,
         )
 
         assert result.returncode == 0, f"MyPy failed: {result.stdout}\n{result.stderr}"
@@ -266,17 +297,18 @@ class TestGeneratedProjectQuality:
         # Install dependencies first
         subprocess.run(
             [sys.executable, "-m", "pip", "install", "-e", ".[dev]"],
-            check=False, cwd=generated_project,
-            capture_output=True
+            check=False,
+            cwd=generated_project,
+            capture_output=True,
         )
 
         # Run tests
         result = subprocess.run(
             [sys.executable, "-m", "pytest", "-v"],
-            check=False, cwd=generated_project,
+            check=False,
+            cwd=generated_project,
             capture_output=True,
-            text=True
+            text=True,
         )
 
         assert result.returncode == 0, f"Tests failed: {result.stdout}\n{result.stderr}"
-

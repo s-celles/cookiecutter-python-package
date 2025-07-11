@@ -26,7 +26,7 @@ class TestPostGenHook:
             content = f.read()
 
         try:
-            compile(content, str(hook_file), 'exec')
+            compile(content, str(hook_file), "exec")
         except SyntaxError as e:
             pytest.fail(f"Syntax error in hook: {e}")
 
@@ -63,7 +63,7 @@ class TestPostGenHook:
             "create_contributing": "n",  # Should remove CONTRIBUTING.md
             "create_code_of_conduct": "n",
             "use_docker": "n",  # Should remove Dockerfile
-            "use_devcontainer": "n"
+            "use_devcontainer": "n",
         }
 
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -71,7 +71,7 @@ class TestPostGenHook:
                 str(template_dir),
                 no_input=True,
                 extra_context=context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
@@ -83,14 +83,18 @@ class TestPostGenHook:
                 "noxfile.py",
                 "CHANGELOG.md",
                 "CONTRIBUTING.md",
-                "Dockerfile"
+                "Dockerfile",
             ]
 
             for file_path in files_that_should_not_exist:
-                assert not (project_path / file_path).exists(), f"{file_path} should not exist when feature is disabled"
+                assert not (project_path / file_path).exists(), (
+                    f"{file_path} should not exist when feature is disabled"
+                )
 
             # .github directory should not exist
-            assert not (project_path / ".github").exists(), ".github directory should not exist when GitHub Actions is disabled"
+            assert not (project_path / ".github").exists(), (
+                ".github directory should not exist when GitHub Actions is disabled"
+            )
 
     def test_hook_keeps_files_when_enabled(self, template_dir: Path) -> None:
         """Test that hook keeps files when features are enabled."""
@@ -125,7 +129,7 @@ class TestPostGenHook:
             "create_contributing": "y",  # Should keep CONTRIBUTING.md
             "create_code_of_conduct": "y",
             "use_docker": "y",  # Should keep Dockerfile
-            "use_devcontainer": "y"
+            "use_devcontainer": "y",
         }
 
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -133,7 +137,7 @@ class TestPostGenHook:
                 str(template_dir),
                 no_input=True,
                 extra_context=context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
@@ -145,15 +149,21 @@ class TestPostGenHook:
                 "noxfile.py",
                 "CHANGELOG.md",
                 "CONTRIBUTING.md",
-                "Dockerfile"
+                "Dockerfile",
             ]
 
             for file_path in files_that_should_exist:
-                assert (project_path / file_path).exists(), f"{file_path} should exist when feature is enabled"
+                assert (project_path / file_path).exists(), (
+                    f"{file_path} should exist when feature is enabled"
+                )
 
             # .github directory should exist
-            assert (project_path / ".github").exists(), ".github directory should exist when GitHub Actions is enabled"
-            assert (project_path / ".github" / "workflows" / "ci.yml").exists(), "CI workflow should exist"
+            assert (project_path / ".github").exists(), (
+                ".github directory should exist when GitHub Actions is enabled"
+            )
+            assert (project_path / ".github" / "workflows" / "ci.yml").exists(), (
+                "CI workflow should exist"
+            )
 
     def test_hook_initializes_git_repo(self, template_dir: Path) -> None:
         """Test that hook initializes a git repository."""
@@ -188,7 +198,7 @@ class TestPostGenHook:
             "create_contributing": "n",
             "create_code_of_conduct": "n",
             "use_docker": "n",
-            "use_devcontainer": "n"
+            "use_devcontainer": "n",
         }
 
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -196,20 +206,23 @@ class TestPostGenHook:
                 str(template_dir),
                 no_input=True,
                 extra_context=context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
 
             # Git repository should be initialized
-            assert (project_path / ".git").exists(), "Git repository should be initialized"
+            assert (project_path / ".git").exists(), (
+                "Git repository should be initialized"
+            )
 
             # Check that there's an initial commit
             result = subprocess.run(
                 ["git", "log", "--oneline"],
-                check=False, cwd=project_path,
+                check=False,
+                cwd=project_path,
                 capture_output=True,
-                text=True
+                text=True,
             )
 
             assert result.returncode == 0, "Should be able to check git log"
@@ -250,7 +263,7 @@ class TestPostGenHook:
             "create_contributing": "y",
             "create_code_of_conduct": "n",
             "use_docker": "n",
-            "use_devcontainer": "n"
+            "use_devcontainer": "n",
         }
 
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -259,7 +272,7 @@ class TestPostGenHook:
                 str(template_dir),
                 no_input=True,
                 extra_context=context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
@@ -299,7 +312,7 @@ class TestPostGenHook:
             "create_contributing": "n",
             "create_code_of_conduct": "n",
             "use_docker": "n",
-            "use_devcontainer": "n"
+            "use_devcontainer": "n",
         }
 
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -308,8 +321,10 @@ class TestPostGenHook:
                 str(template_dir),
                 no_input=True,
                 extra_context=context,
-                output_dir=temp_dir
+                output_dir=temp_dir,
             )
 
             project_path = Path(result)
-            assert project_path.exists(), "Project should be created successfully even with special characters"
+            assert project_path.exists(), (
+                "Project should be created successfully even with special characters"
+            )

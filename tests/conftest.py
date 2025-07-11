@@ -61,7 +61,7 @@ def minimal_context() -> dict[str, Any]:
         "create_contributing": "n",
         "create_code_of_conduct": "n",
         "use_docker": "n",
-        "use_devcontainer": "n"
+        "use_devcontainer": "n",
     }
 
 
@@ -99,22 +99,20 @@ def full_context() -> dict[str, Any]:
         "create_contributing": "y",
         "create_code_of_conduct": "y",
         "use_docker": "y",
-        "use_devcontainer": "y"
+        "use_devcontainer": "y",
     }
 
 
 @pytest.fixture
 def generated_minimal_project(
-    template_dir: Path,
-    minimal_context: dict[str, Any],
-    temp_project_dir: Path
+    template_dir: Path, minimal_context: dict[str, Any], temp_project_dir: Path
 ) -> Generator[Path, None, None]:
     """Generate a minimal test project."""
     result = cookiecutter(
         str(template_dir),
         no_input=True,
         extra_context=minimal_context,
-        output_dir=str(temp_project_dir)
+        output_dir=str(temp_project_dir),
     )
 
     project_path = Path(result)
@@ -123,16 +121,14 @@ def generated_minimal_project(
 
 @pytest.fixture
 def generated_full_project(
-    template_dir: Path,
-    full_context: dict[str, Any],
-    temp_project_dir: Path
+    template_dir: Path, full_context: dict[str, Any], temp_project_dir: Path
 ) -> Generator[Path, None, None]:
     """Generate a full-featured test project."""
     result = cookiecutter(
         str(template_dir),
         no_input=True,
         extra_context=full_context,
-        output_dir=str(temp_project_dir)
+        output_dir=str(temp_project_dir),
     )
 
     project_path = Path(result)
@@ -147,9 +143,10 @@ def installed_project(generated_minimal_project: Path) -> Generator[Path, None, 
     # Install the project in development mode
     result = subprocess.run(
         [sys.executable, "-m", "pip", "install", "-e", ".[dev]"],
-        check=False, cwd=project_path,
+        check=False,
+        cwd=project_path,
         capture_output=True,
-        text=True
+        text=True,
     )
 
     if result.returncode != 0:
@@ -160,7 +157,8 @@ def installed_project(generated_minimal_project: Path) -> Generator[Path, None, 
     # Cleanup - uninstall the package
     subprocess.run(
         [sys.executable, "-m", "pip", "uninstall", "-y", "test_package"],
-        check=False, capture_output=True
+        check=False,
+        capture_output=True,
     )
 
 
@@ -188,13 +186,15 @@ def git_repo(temp_project_dir: Path) -> Generator[Path, None, None]:
     subprocess.run(["git", "init"], check=False, cwd=repo_path, capture_output=True)
     subprocess.run(
         ["git", "config", "user.name", "Test User"],
-        check=False, cwd=repo_path,
-        capture_output=True
+        check=False,
+        cwd=repo_path,
+        capture_output=True,
     )
     subprocess.run(
         ["git", "config", "user.email", "test@example.com"],
-        check=False, cwd=repo_path,
-        capture_output=True
+        check=False,
+        cwd=repo_path,
+        capture_output=True,
     )
 
     yield repo_path
@@ -202,27 +202,13 @@ def git_repo(temp_project_dir: Path) -> Generator[Path, None, None]:
 
 def pytest_configure(config):
     """Configure pytest with custom markers."""
-    config.addinivalue_line(
-        "markers", "slow: mark test as slow running"
-    )
-    config.addinivalue_line(
-        "markers", "integration: mark test as integration test"
-    )
-    config.addinivalue_line(
-        "markers", "unit: mark test as unit test"
-    )
-    config.addinivalue_line(
-        "markers", "bake: mark test as baking/generating projects"
-    )
-    config.addinivalue_line(
-        "markers", "security: mark test as security-related"
-    )
-    config.addinivalue_line(
-        "markers", "performance: mark test as performance-related"
-    )
-    config.addinivalue_line(
-        "markers", "quality: mark test as code quality-related"
-    )
+    config.addinivalue_line("markers", "slow: mark test as slow running")
+    config.addinivalue_line("markers", "integration: mark test as integration test")
+    config.addinivalue_line("markers", "unit: mark test as unit test")
+    config.addinivalue_line("markers", "bake: mark test as baking/generating projects")
+    config.addinivalue_line("markers", "security: mark test as security-related")
+    config.addinivalue_line("markers", "performance: mark test as performance-related")
+    config.addinivalue_line("markers", "quality: mark test as code quality-related")
 
 
 def pytest_collection_modifyitems(config, items):
