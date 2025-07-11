@@ -1,13 +1,14 @@
 """Shared pytest fixtures for the cookiecutter template tests."""
 
-import tempfile
-import shutil
-from pathlib import Path
-from typing import Dict, Any, Generator
 import subprocess
 import sys
+import tempfile
+from collections.abc import Generator
+from pathlib import Path
+from typing import Any
 
 import pytest
+from cookiecutter.main import cookiecutter
 
 # Explicitly tell pytest to ignore the template directory
 collect_ignore = ["../{{cookiecutter.project_slug}}"]
@@ -27,7 +28,7 @@ def temp_project_dir() -> Generator[Path, None, None]:
 
 
 @pytest.fixture
-def minimal_context() -> Dict[str, Any]:
+def minimal_context() -> dict[str, Any]:
     """Minimal context for quick testing."""
     return {
         "full_name": "Test User",
@@ -65,7 +66,7 @@ def minimal_context() -> Dict[str, Any]:
 
 
 @pytest.fixture
-def full_context() -> Dict[str, Any]:
+def full_context() -> dict[str, Any]:
     """Full context with all features enabled."""
     return {
         "full_name": "Test User",
@@ -104,8 +105,8 @@ def full_context() -> Dict[str, Any]:
 
 @pytest.fixture
 def generated_minimal_project(
-    template_dir: Path, 
-    minimal_context: Dict[str, Any], 
+    template_dir: Path,
+    minimal_context: dict[str, Any],
     temp_project_dir: Path
 ) -> Generator[Path, None, None]:
     """Generate a minimal test project."""
@@ -115,15 +116,15 @@ def generated_minimal_project(
         extra_context=minimal_context,
         output_dir=str(temp_project_dir)
     )
-    
+
     project_path = Path(result)
     yield project_path
 
 
 @pytest.fixture
 def generated_full_project(
-    template_dir: Path, 
-    full_context: Dict[str, Any], 
+    template_dir: Path,
+    full_context: dict[str, Any],
     temp_project_dir: Path
 ) -> Generator[Path, None, None]:
     """Generate a full-featured test project."""
@@ -133,7 +134,7 @@ def generated_full_project(
         extra_context=full_context,
         output_dir=str(temp_project_dir)
     )
-    
+
     project_path = Path(result)
     yield project_path
 
@@ -142,38 +143,38 @@ def generated_full_project(
 def installed_project(generated_minimal_project: Path) -> Generator[Path, None, None]:
     """Generate and install a test project."""
     project_path = generated_minimal_project
-    
+
     # Install the project in development mode
     result = subprocess.run(
         [sys.executable, "-m", "pip", "install", "-e", ".[dev]"],
-        cwd=project_path,
+        check=False, cwd=project_path,
         capture_output=True,
         text=True
     )
-    
+
     if result.returncode != 0:
         pytest.fail(f"Failed to install project: {result.stderr}")
-    
+
     yield project_path
-    
+
     # Cleanup - uninstall the package
     subprocess.run(
         [sys.executable, "-m", "pip", "uninstall", "-y", "test_package"],
-        capture_output=True
+        check=False, capture_output=True
     )
 
 
 @pytest.fixture(scope="session")
-def cookiecutter_config() -> Dict[str, Any]:
+def cookiecutter_config() -> dict[str, Any]:
     """Load and validate cookiecutter.json configuration."""
     import json
-    
+
     template_dir = Path(__file__).parent.parent
     config_file = template_dir / "cookiecutter.json"
-    
+
     with open(config_file) as f:
         config = json.load(f)
-    
+
     return config
 
 
@@ -182,20 +183,20 @@ def git_repo(temp_project_dir: Path) -> Generator[Path, None, None]:
     """Create a temporary git repository."""
     repo_path = temp_project_dir / "test_repo"
     repo_path.mkdir()
-    
+
     # Initialize git repo
-    subprocess.run(["git", "init"], cwd=repo_path, capture_output=True)
+    subprocess.run(["git", "init"], check=False, cwd=repo_path, capture_output=True)
     subprocess.run(
-        ["git", "config", "user.name", "Test User"], 
-        cwd=repo_path, 
+        ["git", "config", "user.name", "Test User"],
+        check=False, cwd=repo_path,
         capture_output=True
     )
     subprocess.run(
-        ["git", "config", "user.email", "test@example.com"], 
-        cwd=repo_path, 
+        ["git", "config", "user.email", "test@example.com"],
+        check=False, cwd=repo_path,
         capture_output=True
     )
-    
+
     yield repo_path
 
 
@@ -230,19 +231,19 @@ def pytest_collection_modifyitems(config, items):
         # Mark slow tests
         if "slow" in item.name or "performance" in item.name:
             item.add_marker(pytest.mark.slow)
-        
+
         # Mark integration tests
         if "integration" in item.name or "workflow" in item.name:
             item.add_marker(pytest.mark.integration)
-        
+
         # Mark baking tests
         if "bake" in item.name or "generation" in item.name or "generated" in item.name:
             item.add_marker(pytest.mark.bake)
-        
+
         # Mark security tests
         if "security" in item.name or "bandit" in item.name or "safety" in item.name:
             item.add_marker(pytest.mark.security)
-        
+
         # Mark quality tests
         if "quality" in item.name or "lint" in item.name or "format" in item.name:
             item.add_marker(pytest.mark.quality)

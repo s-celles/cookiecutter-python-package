@@ -125,6 +125,18 @@ output = "coverage.xml"
 [tool.ruff]
 line-length = 88
 target-version = "py39"
+exclude = [
+    ".venv",
+    "venv",
+    "__pycache__",
+    ".git",
+    ".pytest_cache",
+    ".mypy_cache",
+    ".ruff_cache",
+    "build",
+    "dist",
+    "*.egg-info",
+]
 
 [tool.ruff.lint]
 select = [
@@ -169,6 +181,7 @@ warn_unused_ignores = true
 warn_no_return = true
 warn_unreachable = true
 strict_equality = true
+exclude = "{{cookiecutter.project_slug}}"  # Exclude template directory
 
 [[tool.mypy.overrides]]
 module = "tests.*"

@@ -1,0 +1,2 @@
+# Template directory - has Jinja2 syntax that can't be parsed
+/{{cookiecutter.project_slug}}

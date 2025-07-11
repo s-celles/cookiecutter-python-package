@@ -27,8 +27,8 @@ jobs:
         
     - name: Lint with Ruff
       run: |
-        ruff check .
-        ruff format --check .
+        ruff check hooks/ tests/
+        ruff format --check hooks/ tests/
         
     - name: Type check with MyPy
       run: mypy hooks/ tests/

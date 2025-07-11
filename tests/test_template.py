@@ -1,13 +1,11 @@
 """Comprehensive tests for the cookiecutter template generation."""
 
-import os
+import json
+import subprocess
 import sys
 import tempfile
-import shutil
 from pathlib import Path
-from typing import Dict, Any, List
-import subprocess
-import json
+from typing import Any, Dict
 
 import pytest
 from cookiecutter.main import cookiecutter
@@ -33,7 +31,7 @@ def minimal_context() -> Dict[str, Any]:
         "python_requires": ">=3.9",
         "license": "MIT",
         "use_ruff": "n",
-        "use_mypy": "n", 
+        "use_mypy": "n",
         "use_pytest": "y",
         "use_coverage": "n",
         "use_pre_commit": "n",
@@ -62,7 +60,7 @@ def full_context() -> Dict[str, Any]:
     """Full context with all features enabled."""
     return {
         "full_name": "Test User",
-        "email": "test@example.com", 
+        "email": "test@example.com",
         "github_username": "testuser",
         "project_name": "Test Package",
         "project_slug": "test_package",
@@ -72,7 +70,7 @@ def full_context() -> Dict[str, Any]:
         "license": "MIT",
         "use_ruff": "y",
         "use_mypy": "y",
-        "use_pytest": "y", 
+        "use_pytest": "y",
         "use_coverage": "y",
         "use_pre_commit": "y",
         "use_bandit": "y",
@@ -107,14 +105,14 @@ class TestTemplateStructure:
         """Test that cookiecutter.json exists and is valid."""
         cookiecutter_json = template_dir / "cookiecutter.json"
         assert cookiecutter_json.exists()
-        
+
         # Test that it's valid JSON
         with open(cookiecutter_json) as f:
             config = json.load(f)
-        
+
         # Check required fields
         required_fields = [
-            "full_name", "email", "github_username", 
+            "full_name", "email", "github_username",
             "project_name", "project_slug"
         ]
         for field in required_fields:
@@ -135,10 +133,10 @@ class TestTemplateStructure:
     def test_required_template_files(self, template_dir: Path) -> None:
         """Test that all required template files exist."""
         project_template = template_dir / "{{cookiecutter.project_slug}}"
-        
+
         required_files = [
             "pyproject.toml",
-            "README.md", 
+            "README.md",
             "LICENSE",
             ".gitignore",
             "src/{{cookiecutter.project_slug}}/__init__.py",
@@ -149,7 +147,7 @@ class TestTemplateStructure:
             "tests/test_core.py",
             "tests/test_cli.py",
         ]
-        
+
         for file_path in required_files:
             full_path = project_template / file_path
             assert full_path.exists(), f"Required file {file_path} not found"
@@ -167,7 +165,7 @@ class TestProjectGeneration:
                 extra_context=minimal_context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
             assert project_path.exists()
             assert (project_path / "pyproject.toml").exists()
@@ -182,10 +180,10 @@ class TestProjectGeneration:
                 extra_context=full_context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
             assert project_path.exists()
-            
+
             # Check that optional files are created
             assert (project_path / ".pre-commit-config.yaml").exists()
             assert (project_path / ".github" / "workflows" / "ci.yml").exists()
@@ -199,7 +197,7 @@ class TestProjectGeneration:
         """Test different CLI framework options."""
         context = minimal_context.copy()
         context["command_line_interface"] = cli_option
-        
+
         with tempfile.TemporaryDirectory() as temp_dir:
             result = cookiecutter(
                 str(template_dir),
@@ -207,13 +205,13 @@ class TestProjectGeneration:
                 extra_context=context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
             cli_file = project_path / "src" / "test_package" / "cli.py"
-            
+
             assert cli_file.exists()
             cli_content = cli_file.read_text(encoding='utf-8')
-            
+
             if cli_option == "typer":
                 assert "import typer" in cli_content
             elif cli_option == "click":
@@ -228,7 +226,7 @@ class TestProjectGeneration:
         """Test different license options."""
         context = minimal_context.copy()
         context["license"] = license_type
-        
+
         with tempfile.TemporaryDirectory() as temp_dir:
             result = cookiecutter(
                 str(template_dir),
@@ -236,13 +234,13 @@ class TestProjectGeneration:
                 extra_context=context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
             license_file = project_path / "LICENSE"
-            
+
             assert license_file.exists()
             license_content = license_file.read_text(encoding='utf-8')
-            
+
             if license_type == "MIT":
                 assert "MIT License" in license_content
             elif license_type == "Apache-2.0":
@@ -263,19 +261,19 @@ class TestGeneratedProject:
                 extra_context=minimal_context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
             pyproject_file = project_path / "pyproject.toml"
-            
+
             # Try to parse the TOML file
             try:
                 import tomllib  # Python 3.11+
             except ImportError:
                 import tomli as tomllib  # type: ignore
-            
+
             with open(pyproject_file, "rb") as f:
                 config = tomllib.load(f)
-            
+
             # Check required sections
             assert "build-system" in config
             assert "project" in config
@@ -290,17 +288,17 @@ class TestGeneratedProject:
                 extra_context=minimal_context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
-            
+
             # Try to install the package in development mode
             result = subprocess.run(
                 [sys.executable, "-m", "pip", "install", "-e", "."],
-                cwd=project_path,
+                check=False, cwd=project_path,
                 capture_output=True,
                 text=True
             )
-            
+
             # Installation should succeed
             assert result.returncode == 0, f"Installation failed: {result.stderr}"
 
@@ -313,24 +311,24 @@ class TestGeneratedProject:
                 extra_context=minimal_context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
-            
+
             # Install the package first
             subprocess.run(
                 [sys.executable, "-m", "pip", "install", "-e", ".[dev]"],
-                cwd=project_path,
+                check=False, cwd=project_path,
                 capture_output=True
             )
-            
+
             # Run the tests
             result = subprocess.run(
                 [sys.executable, "-m", "pytest", "-v"],
-                cwd=project_path,
+                check=False, cwd=project_path,
                 capture_output=True,
                 text=True
             )
-            
+
             # Tests should pass
             assert result.returncode == 0, f"Tests failed: {result.stdout}\n{result.stderr}"
 
@@ -348,9 +346,9 @@ class TestHooks:
                 extra_context=minimal_context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
-            
+
             # Check that git repo was initialized
             assert (project_path / ".git").exists()
 
@@ -360,7 +358,7 @@ class TestHooks:
         context["use_pre_commit"] = "n"
         context["use_tox"] = "n"
         context["use_docker"] = "n"
-        
+
         with tempfile.TemporaryDirectory() as temp_dir:
             result = cookiecutter(
                 str(template_dir),
@@ -368,9 +366,9 @@ class TestHooks:
                 extra_context=context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
-            
+
             # These files should not exist when features are disabled
             assert not (project_path / ".pre-commit-config.yaml").exists()
             assert not (project_path / "tox.ini").exists()
@@ -390,30 +388,30 @@ class TestIntegration:
                 extra_context=full_context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
-            
+
             # Install dependencies
             subprocess.run(
                 [sys.executable, "-m", "pip", "install", "-e", ".[dev]"],
-                cwd=project_path,
+                check=False, cwd=project_path,
                 capture_output=True
             )
-            
+
             # Auto-fix Ruff issues first
             subprocess.run(
                 [sys.executable, "-m", "ruff", "check", "--fix", "."],
-                cwd=project_path,
+                check=False, cwd=project_path,
                 capture_output=True
             )
-            
+
             # Auto-format with Ruff
             subprocess.run(
                 [sys.executable, "-m", "ruff", "format", "."],
-                cwd=project_path,
+                check=False, cwd=project_path,
                 capture_output=True
             )
-            
+
             # Run various tools
             tools_to_test = [
                 ([sys.executable, "-m", "pytest"], "Tests should pass"),
@@ -421,11 +419,11 @@ class TestIntegration:
                 ([sys.executable, "-m", "ruff", "format", "--check", "."], "Ruff format should pass"),
                 ([sys.executable, "-m", "mypy", "src/test_package"], "MyPy should pass"),
             ]
-            
+
             for cmd, description in tools_to_test:
                 result = subprocess.run(
                     cmd,
-                    cwd=project_path,
+                    check=False, cwd=project_path,
                     capture_output=True,
                     text=True
                 )

@@ -1,12 +1,10 @@
 """Performance and stress tests for the cookiecutter template."""
 
+import concurrent.futures
 import tempfile
 import time
 from pathlib import Path
-from typing import Dict, Any, List
-import concurrent.futures
-import subprocess
-import sys
+from typing import Any, Dict
 
 import pytest
 from cookiecutter.main import cookiecutter
@@ -62,20 +60,20 @@ class TestPerformance:
         """Test that template generation completes in reasonable time."""
         with tempfile.TemporaryDirectory() as temp_dir:
             start_time = time.time()
-            
+
             result = cookiecutter(
                 str(template_dir),
                 no_input=True,
                 extra_context=minimal_context,
                 output_dir=temp_dir
             )
-            
+
             end_time = time.time()
             generation_time = end_time - start_time
-            
+
             # Template generation should complete in under 5 seconds
             assert generation_time < 5.0, f"Template generation took {generation_time:.2f}s, expected < 5s"
-            
+
             # Verify the project was created
             project_path = Path(result)
             assert project_path.exists()
@@ -84,11 +82,11 @@ class TestPerformance:
     def test_concurrent_generation(self, template_dir: Path, minimal_context: Dict[str, Any]) -> None:
         """Test that multiple templates can be generated concurrently."""
         import platform
-        
+
         # Skip test on Windows due to filesystem concurrency issues
         if platform.system() == "Windows":
             pytest.skip("Concurrent generation test skipped on Windows due to filesystem limitations")
-        
+
         def generate_project(project_id: int) -> str:
             context = minimal_context.copy()
             # Use timestamp and process ID to ensure uniqueness
@@ -96,7 +94,7 @@ class TestPerformance:
             import threading
             unique_id = f"{project_id}_{int(time.time() * 1000000)}_{os.getpid()}_{threading.get_ident()}"
             context["project_slug"] = f"test_package_{unique_id}"
-            
+
             # Each thread gets its own temp directory
             with tempfile.TemporaryDirectory(prefix=f"cookiecutter_test_{unique_id}_") as temp_dir:
                 result = cookiecutter(
@@ -109,17 +107,17 @@ class TestPerformance:
 
         # Generate 3 projects concurrently
         start_time = time.time()
-        
+
         with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
             futures = [executor.submit(generate_project, i) for i in range(3)]
             results = [future.result() for future in concurrent.futures.as_completed(futures)]
-        
+
         end_time = time.time()
         total_time = end_time - start_time
-        
+
         # Should complete all 3 in under 10 seconds
         assert total_time < 10.0, f"Concurrent generation took {total_time:.2f}s, expected < 10s"
-        
+
         # All projects should be generated
         assert len(results) == 3
         for result in results:
@@ -164,27 +162,27 @@ class TestPerformance:
 
         with tempfile.TemporaryDirectory() as temp_dir:
             start_time = time.time()
-            
+
             result = cookiecutter(
                 str(template_dir),
                 no_input=True,
                 extra_context=full_context,
                 output_dir=temp_dir
             )
-            
+
             end_time = time.time()
             generation_time = end_time - start_time
-            
+
             # Even large projects should generate quickly
             assert generation_time < 10.0, f"Large project generation took {generation_time:.2f}s, expected < 10s"
-            
+
             project_path = Path(result)
             assert project_path.exists()
-            
+
             # Count generated files
             all_files = list(project_path.rglob("*"))
             file_count = len([f for f in all_files if f.is_file()])
-            
+
             # Should generate a substantial number of files
             assert file_count > 20, f"Expected > 20 files, got {file_count}"
 
@@ -246,10 +244,10 @@ class TestStress:
                 extra_context=context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
             assert project_path.exists()
-            
+
             # Check that Python package directory was created correctly
             package_dir = project_path / "src" / context["project_slug"]
             assert package_dir.exists()
@@ -303,10 +301,10 @@ class TestStress:
                 extra_context=context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
             assert project_path.exists()
-            
+
             # Check that author name appears correctly in generated files
             pyproject_file = project_path / "pyproject.toml"
             content = pyproject_file.read_text(encoding='utf-8')
@@ -355,10 +353,10 @@ class TestStress:
                 extra_context=context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
             assert project_path.exists()
-            
+
             # Even with minimal values, basic structure should exist
             assert (project_path / "pyproject.toml").exists()
             assert (project_path / "src" / "a" / "__init__.py").exists()

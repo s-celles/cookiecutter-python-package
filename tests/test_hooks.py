@@ -1,10 +1,8 @@
 """Tests for cookiecutter hooks."""
 
-import tempfile
 import subprocess
-import sys
+import tempfile
 from pathlib import Path
-from typing import Dict, Any
 
 import pytest
 from cookiecutter.main import cookiecutter
@@ -22,11 +20,11 @@ class TestPostGenHook:
         """Test that the post-gen hook file exists and is executable."""
         hook_file = template_dir / "hooks" / "post_gen_project.py"
         assert hook_file.exists()
-        
+
         # Test that it's valid Python
         with open(hook_file) as f:
             content = f.read()
-        
+
         try:
             compile(content, str(hook_file), 'exec')
         except SyntaxError as e:
@@ -38,7 +36,7 @@ class TestPostGenHook:
             "full_name": "Test User",
             "email": "test@example.com",
             "github_username": "testuser",
-            "project_name": "Test Package", 
+            "project_name": "Test Package",
             "project_slug": "test_package",
             "project_short_description": "A test package",
             "version": "0.1.0",
@@ -67,7 +65,7 @@ class TestPostGenHook:
             "use_docker": "n",  # Should remove Dockerfile
             "use_devcontainer": "n"
         }
-        
+
         with tempfile.TemporaryDirectory() as temp_dir:
             result = cookiecutter(
                 str(template_dir),
@@ -75,22 +73,22 @@ class TestPostGenHook:
                 extra_context=context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
-            
+
             # These files should not exist when features are disabled
             files_that_should_not_exist = [
                 ".pre-commit-config.yaml",
-                "tox.ini", 
+                "tox.ini",
                 "noxfile.py",
                 "CHANGELOG.md",
                 "CONTRIBUTING.md",
                 "Dockerfile"
             ]
-            
+
             for file_path in files_that_should_not_exist:
                 assert not (project_path / file_path).exists(), f"{file_path} should not exist when feature is disabled"
-            
+
             # .github directory should not exist
             assert not (project_path / ".github").exists(), ".github directory should not exist when GitHub Actions is disabled"
 
@@ -98,12 +96,12 @@ class TestPostGenHook:
         """Test that hook keeps files when features are enabled."""
         context = {
             "full_name": "Test User",
-            "email": "test@example.com", 
+            "email": "test@example.com",
             "github_username": "testuser",
             "project_name": "Test Package",
             "project_slug": "test_package",
             "project_short_description": "A test package",
-            "version": "0.1.0", 
+            "version": "0.1.0",
             "python_requires": ">=3.9",
             "license": "MIT",
             "use_ruff": "y",
@@ -129,7 +127,7 @@ class TestPostGenHook:
             "use_docker": "y",  # Should keep Dockerfile
             "use_devcontainer": "y"
         }
-        
+
         with tempfile.TemporaryDirectory() as temp_dir:
             result = cookiecutter(
                 str(template_dir),
@@ -137,22 +135,22 @@ class TestPostGenHook:
                 extra_context=context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
-            
+
             # These files should exist when features are enabled
             files_that_should_exist = [
                 ".pre-commit-config.yaml",
                 "tox.ini",
-                "noxfile.py", 
+                "noxfile.py",
                 "CHANGELOG.md",
                 "CONTRIBUTING.md",
                 "Dockerfile"
             ]
-            
+
             for file_path in files_that_should_exist:
                 assert (project_path / file_path).exists(), f"{file_path} should exist when feature is enabled"
-            
+
             # .github directory should exist
             assert (project_path / ".github").exists(), ".github directory should exist when GitHub Actions is enabled"
             assert (project_path / ".github" / "workflows" / "ci.yml").exists(), "CI workflow should exist"
@@ -164,7 +162,7 @@ class TestPostGenHook:
             "email": "test@example.com",
             "github_username": "testuser",
             "project_name": "Test Package",
-            "project_slug": "test_package", 
+            "project_slug": "test_package",
             "project_short_description": "A test package",
             "version": "0.1.0",
             "python_requires": ">=3.9",
@@ -192,7 +190,7 @@ class TestPostGenHook:
             "use_docker": "n",
             "use_devcontainer": "n"
         }
-        
+
         with tempfile.TemporaryDirectory() as temp_dir:
             result = cookiecutter(
                 str(template_dir),
@@ -200,20 +198,20 @@ class TestPostGenHook:
                 extra_context=context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
-            
+
             # Git repository should be initialized
             assert (project_path / ".git").exists(), "Git repository should be initialized"
-            
+
             # Check that there's an initial commit
             result = subprocess.run(
                 ["git", "log", "--oneline"],
-                cwd=project_path,
+                check=False, cwd=project_path,
                 capture_output=True,
                 text=True
             )
-            
+
             assert result.returncode == 0, "Should be able to check git log"
             assert "Initial commit" in result.stdout, "Should have initial commit"
 
@@ -227,7 +225,7 @@ class TestPostGenHook:
             "github_username": "testuser",
             "project_name": "Test Package",
             "project_slug": "test_package",
-            "project_short_description": "A test package", 
+            "project_short_description": "A test package",
             "version": "0.1.0",
             "python_requires": ">=3.9",
             "license": "MIT",
@@ -239,7 +237,7 @@ class TestPostGenHook:
             "use_bandit": "y",
             "use_safety": "y",
             "use_sphinx": "n",
-            "use_mkdocs": "n", 
+            "use_mkdocs": "n",
             "use_github_actions": "y",
             "use_dependabot": "y",
             "use_codecov": "y",
@@ -254,7 +252,7 @@ class TestPostGenHook:
             "use_docker": "n",
             "use_devcontainer": "n"
         }
-        
+
         with tempfile.TemporaryDirectory() as temp_dir:
             # This should complete without errors
             result = cookiecutter(
@@ -263,7 +261,7 @@ class TestPostGenHook:
                 extra_context=context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
             assert project_path.exists(), "Project should be created successfully"
 
@@ -303,7 +301,7 @@ class TestPostGenHook:
             "use_docker": "n",
             "use_devcontainer": "n"
         }
-        
+
         with tempfile.TemporaryDirectory() as temp_dir:
             # This should complete without errors even with special characters
             result = cookiecutter(
@@ -312,6 +310,6 @@ class TestPostGenHook:
                 extra_context=context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
             assert project_path.exists(), "Project should be created successfully even with special characters"

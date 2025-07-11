@@ -1,12 +1,12 @@
 """Security and quality tests for the cookiecutter template."""
 
-import tempfile
+import json
+import re
 import subprocess
 import sys
-import json
+import tempfile
 from pathlib import Path
-from typing import Dict, Any, List
-import re
+from typing import Any, Dict
 
 import pytest
 from cookiecutter.main import cookiecutter
@@ -67,17 +67,17 @@ class TestSecurity:
             r"token\s*=\s*['\"][^'\"]+['\"]",
             r"-----BEGIN .* PRIVATE KEY-----",
         ]
-        
+
         template_files = []
         for pattern in ["**/*.py", "**/*.yml", "**/*.yaml", "**/*.toml", "**/*.md", "**/*.txt"]:
             template_files.extend(template_dir.rglob(pattern))
-        
+
         for file_path in template_files:
             if file_path.is_file():
                 # Skip test files that might contain pattern examples
                 if "test_security.py" in str(file_path):
                     continue
-                    
+
                 try:
                     content = file_path.read_text(encoding='utf-8')
                     for pattern in secret_patterns:
@@ -96,21 +96,21 @@ class TestSecurity:
                 extra_context=secure_context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
             workflows_dir = project_path / ".github" / "workflows"
-            
+
             if workflows_dir.exists():
                 for workflow_file in workflows_dir.glob("*.yml"):
                     content = workflow_file.read_text(encoding='utf-8')
-                    
+
                     # Check for security best practices
                     assert "permissions:" in content, f"Workflow {workflow_file.name} should specify permissions"
-                    
+
                     # Should not use deprecated actions
                     assert "actions/checkout@v1" not in content, "Should use latest checkout action"
                     assert "actions/setup-python@v1" not in content, "Should use latest setup-python action"
-                    
+
                     # Should pin action versions
                     action_refs = re.findall(r"uses:\s*([^@\s]+)@([^\s]+)", content)
                     for action, ref in action_refs:
@@ -126,16 +126,16 @@ class TestSecurity:
                 extra_context=secure_context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
             pyproject_file = project_path / "pyproject.toml"
-            
+
             content = pyproject_file.read_text(encoding='utf-8')
-            
+
             # Should include security tools when enabled
             if secure_context["use_bandit"] == "y":
                 assert "bandit" in content, "Bandit should be included when enabled"
-            
+
             if secure_context["use_safety"] == "y":
                 assert "safety" in content, "Safety should be included when enabled"
 
@@ -148,24 +148,24 @@ class TestSecurity:
                 extra_context=secure_context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
-            
+
             # Install dependencies
             subprocess.run(
                 [sys.executable, "-m", "pip", "install", "-e", ".[dev]"],
-                cwd=project_path,
+                check=False, cwd=project_path,
                 capture_output=True
             )
-            
+
             # Run Bandit
             result = subprocess.run(
                 [sys.executable, "-m", "bandit", "-r", "src/", "-ll"],
-                cwd=project_path,
+                check=False, cwd=project_path,
                 capture_output=True,
                 text=True
             )
-            
+
             # Should pass security checks
             assert result.returncode == 0, f"Bandit security check failed: {result.stdout}\n{result.stderr}"
 
@@ -224,15 +224,15 @@ class TestQuality:
                 extra_context=quality_context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
-            
+
             # Check Python files for consistent formatting
             python_files = list(project_path.rglob("*.py"))
-            
+
             for py_file in python_files:
                 content = py_file.read_text(encoding='utf-8')
-                
+
                 # Check for consistent indentation (4 spaces)
                 lines = content.split('\n')
                 for line_num, line in enumerate(lines, 1):
@@ -240,7 +240,7 @@ class TestQuality:
                         # Count leading spaces
                         leading_spaces = len(line) - len(line.lstrip(' '))
                         assert leading_spaces % 4 == 0, f"Inconsistent indentation in {py_file}:{line_num}"
-                
+
                 # Check for consistent quotes (should prefer double quotes for Ruff)
                 # This is a basic check - Ruff will do more thorough formatting
 
@@ -253,27 +253,27 @@ class TestQuality:
                 extra_context=quality_context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
-            
+
             # Check that README exists and has content
             readme_file = project_path / "README.md"
             assert readme_file.exists(), "README.md should exist"
-            
+
             readme_content = readme_file.read_text(encoding='utf-8')
             assert len(readme_content) > 100, "README should have substantial content"
             assert "# Test Package" in readme_content, "README should have project title"
             assert "## Installation" in readme_content, "README should have installation instructions"
             assert "## Usage" in readme_content, "README should have usage examples"
-            
+
             # Check for documentation files when enabled
             if quality_context["create_contributing"] == "y":
                 contributing_file = project_path / "CONTRIBUTING.md"
                 assert contributing_file.exists(), "CONTRIBUTING.md should exist when enabled"
-                
+
                 contributing_content = contributing_file.read_text(encoding='utf-8')
                 assert "# Contributing" in contributing_content, "CONTRIBUTING should have proper header"
-            
+
             if quality_context["create_changelog"] == "y":
                 changelog_file = project_path / "CHANGELOG.md"
                 assert changelog_file.exists(), "CHANGELOG.md should exist when enabled"
@@ -287,22 +287,22 @@ class TestQuality:
                 extra_context=quality_context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
-            
+
             # Check that py.typed marker exists
             py_typed_file = project_path / "src" / "test_package" / "py.typed"
             assert py_typed_file.exists(), "py.typed marker should exist for type checking support"
-            
+
             # Check main module files for type hints
             core_file = project_path / "src" / "test_package" / "core.py"
             if core_file.exists():
                 content = core_file.read_text(encoding='utf-8')
-                
+
                 # Should have type imports
                 assert "from typing import" in content or "from __future__ import annotations" in content, \
                     "Should import typing for type hints"
-                
+
                 # Should have function annotations
                 function_lines = [line for line in content.split('\n') if 'def ' in line]
                 for line in function_lines:
@@ -319,12 +319,12 @@ class TestQuality:
                 extra_context=quality_context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
             pyproject_file = project_path / "pyproject.toml"
-            
+
             content = pyproject_file.read_text(encoding='utf-8')
-            
+
             if quality_context["use_coverage"] == "y":
                 # Should have coverage configuration
                 assert "[tool.coverage" in content, "Should have coverage configuration"
@@ -340,17 +340,17 @@ class TestQuality:
                 extra_context=quality_context,
                 output_dir=temp_dir
             )
-            
+
             project_path = Path(result)
             pyproject_file = project_path / "pyproject.toml"
-            
+
             content = pyproject_file.read_text(encoding='utf-8')
-            
+
             if quality_context["use_ruff"] == "y":
                 assert "[tool.ruff" in content, "Should have Ruff configuration"
                 assert "select = " in content, "Should specify Ruff rules to enable"
                 assert "line-length = " in content, "Should specify line length"
-            
+
             if quality_context["use_mypy"] == "y":
                 assert "[tool.mypy" in content, "Should have MyPy configuration"
                 assert "python_version = " in content, "Should specify Python version for MyPy"
@@ -368,34 +368,34 @@ class TestAccessibility:
         """Test that template README is accessible and informative."""
         readme_file = template_dir / "README.md"
         assert readme_file.exists(), "Template should have README.md"
-        
+
         content = readme_file.read_text(encoding='utf-8')
-        
+
         # Should have clear structure
         assert "# " in content, "README should have main heading"
         assert "## " in content, "README should have section headings"
-        
+
         # Should explain what the template is
         assert "cookiecutter" in content.lower(), "Should mention cookiecutter"
         assert "template" in content.lower(), "Should mention it's a template"
-        
+
         # Should have usage instructions
         assert "cookiecutter" in content, "Should show cookiecutter command"
 
     def test_cookiecutter_json_documentation(self, template_dir: Path) -> None:
         """Test that cookiecutter.json is well-documented."""
         cookiecutter_json = template_dir / "cookiecutter.json"
-        
+
         with open(cookiecutter_json) as f:
             config = json.load(f)
-        
+
         # Check that choice fields have reasonable defaults and options
         choice_fields = ["license", "command_line_interface"]
-        
+
         for field in choice_fields:
             if field in config and isinstance(config[field], list):
                 assert len(config[field]) > 1, f"Choice field {field} should have multiple options"
-                
+
                 # First option should be reasonable default
                 first_option = config[field][0]
                 assert first_option, f"First option for {field} should not be empty"
@@ -403,13 +403,13 @@ class TestAccessibility:
     def test_error_handling_in_hooks(self, template_dir: Path) -> None:
         """Test that hooks handle errors gracefully."""
         hook_file = template_dir / "hooks" / "post_gen_project.py"
-        
+
         if hook_file.exists():
             content = hook_file.read_text(encoding='utf-8')
-            
+
             # Should have error handling
             assert "try:" in content or "except" in content, "Hooks should include error handling"
-            
+
             # Should provide helpful messages
             assert "print(" in content, "Hooks should provide user feedback"
 
