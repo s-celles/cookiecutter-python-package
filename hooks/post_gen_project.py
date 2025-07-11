@@ -21,7 +21,7 @@ def remove_dir(dirpath: Path) -> None:
         shutil.rmtree(dirpath)
 
 
-def main():
+def main() -> None:
     """Main post-generation cleanup."""
     try:
         # Remove files based on configuration

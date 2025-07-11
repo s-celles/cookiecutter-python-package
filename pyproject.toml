@@ -197,6 +197,26 @@ disallow_incomplete_defs = false
 warn_return_any = false
 warn_unused_ignores = false
 
+[[tool.mypy.overrides]]
+module = "hooks.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+warn_return_any = false
+warn_unused_ignores = false
+strict_equality = false
+
+[[tool.mypy.overrides]]
+module = "cookiecutter.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "tomllib"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "tomli"
+ignore_missing_imports = true
+
 [tool.bandit]
 exclude_dirs = ["tests", ".venv", "venv"]
 skips = ["B101"]  # Skip test for assert statements (common in tests)

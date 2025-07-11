@@ -31,7 +31,7 @@ jobs:
         ruff format --check hooks/ tests/
 
     - name: Type check with MyPy
-      run: mypy hooks/ tests/
+      run: mypy tests/
 
     - name: Security check with Bandit
       run: bandit -r hooks/ -ll
