@@ -2,7 +2,8 @@
 
 A modern [cookiecutter](https://github.com/cookiecutter/cookiecutter) template for Python packages with best practices built-in.
 
-[![CI](https://github.com/s-celles/cookiecutter-python-package/actions/workflows/ci.yml/badge.svg)](https://github.com/s-celles/cookiecutter-python-package/actions/workflows/ci.yml)
+[![CI](https://github.com/s-celles/cookiecutter-python-package/actions/workflows/test.yml/badge.svg)](https://github.com/s-celles/cookiecutter-python-package/actions/workflows/test.yml)
+[![Documentation](https://github.com/s-celles/cookiecutter-python-package/actions/workflows/docs.yml/badge.svg)](https://s-celles.github.io/cookiecutter-python-package/)
 [![Python versions](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -12,9 +13,11 @@ A modern [cookiecutter](https://github.com/cookiecutter/cookiecutter) template f
     cookiecutter https://github.com/s-celles/cookiecutter-python-package.git
     ```
 
-!!! warning This project is currently in active development.
+!!! warning "Development Status"
+    This project is currently in active development.
 
-!!! info "AI-Generated Content Notice" A significant portion of this project's content (including code, documentation, and examples) has been generated using AI assistance. Please review all code and documentation carefully before use in production environments. We recommend thorough testing and validation of any AI-generated components.
+!!! info "AI-Generated Content Notice"
+    A significant portion of this project's content (including code, documentation, and examples) has been generated using AI assistance. Please review all code and documentation carefully before use in production environments. We recommend thorough testing and validation of any AI-generated components.
 
 ## What You Get
 
