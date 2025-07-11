@@ -96,6 +96,9 @@ omit = [
     "*/site-packages/*",
     ".venv/*",
     "venv/*",
+    "{{cookiecutter.project_slug}}/*",  # Exclude template directory
+    "*/tmp*/*",  # Exclude temporary directories
+    "/tmp/*",    # Exclude /tmp directories
 ]
 
 [tool.coverage.report]
