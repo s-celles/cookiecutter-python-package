@@ -37,10 +37,10 @@ def test_cli_help():
     assert "{{ cookiecutter.project_short_description }}" in result.stdout
 
 {%- elif cookiecutter.command_line_interface == "click" %}
+
 from click.testing import CliRunner
 
 from {{ cookiecutter.project_slug.replace('-', '_') }}.cli import main
-
 
 runner = CliRunner()
 
@@ -65,12 +65,11 @@ def test_cli_greet_custom():
     assert "Hello, Python!" in result.output
 
 {%- elif cookiecutter.command_line_interface == "argparse" %}
-import io
+
 import sys
 from unittest.mock import patch
 
-from {{ cookiecutter.project_slug.replace('-', '_') }}.cli import main, create_parser
-
+from {{ cookiecutter.project_slug.replace('-', '_') }}.cli import create_parser, main
 
 def test_parser_creation():
     """Test parser creation."""

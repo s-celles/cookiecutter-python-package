@@ -1,4 +1,4 @@
-{%- if cookiecutter.command_line_interface != "none" %}
+{%- if cookiecutter.command_line_interface != "none" -%}
 """Command line interface for {{ cookiecutter.project_name }}."""
 {%- if cookiecutter.command_line_interface == "typer" %}
 
@@ -55,6 +55,7 @@ if __name__ == "__main__":
     app()
 
 {%- elif cookiecutter.command_line_interface == "click" %}
+
 import click
 
 from . import __version__
@@ -81,6 +82,7 @@ if __name__ == "__main__":
     main()
 
 {%- elif cookiecutter.command_line_interface == "argparse" %}
+
 import argparse
 import sys
 
@@ -99,9 +101,9 @@ def create_parser() -> argparse.ArgumentParser:
         action="version",
         version=f"{{ cookiecutter.project_name }} v{__version__}",
     )
-    
+
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
-    
+
     # Greet command
     greet_parser = subparsers.add_parser("greet", help="Greet someone")
     greet_parser.add_argument(
@@ -110,7 +112,7 @@ def create_parser() -> argparse.ArgumentParser:
         default="World",
         help="Name to greet (default: World)",
     )
-    
+
     return parser
 
 
@@ -118,7 +120,7 @@ def main() -> None:
     """Main entry point."""
     parser = create_parser()
     args = parser.parse_args()
-    
+
     if args.command == "greet":
         message = hello_world(args.name)
         print(message)
@@ -131,6 +133,7 @@ if __name__ == "__main__":
     main()
 {%- endif %}
 {%- else %}
+
 """No command line interface configured."""
 
 def main() -> None:
