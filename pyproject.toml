@@ -161,6 +161,7 @@ ignore = [
     "B007",   # Loop control variable not used within loop body
     "F841",   # Local variable assigned to but never used
     "PLR1714", # Consider merging multiple comparisons
+    "PLC0415", # import should be at top-level (needed for conditional imports)
 ]
 
 [tool.ruff.lint.per-file-ignores]
