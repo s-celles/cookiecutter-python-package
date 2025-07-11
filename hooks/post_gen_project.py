@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Post-generation hook for cookiecutter-python-package."""
 
-import os
 import shutil
+import subprocess
 from pathlib import Path
 
 # Get the project directory
@@ -57,9 +57,44 @@ def main() -> None:
                 remove_file(cli_test_file)
 
         # Create initial git repository
-        os.system("git init")
-        os.system("git add .")
-        os.system('git commit -m "Initial commit from cookiecutter-python-package"')
+        try:
+            # Initialize git repository
+            subprocess.run(["git", "init"], check=True, cwd=PROJECT_DIRECTORY)
+
+            # Configure git identity for the initial commit
+            subprocess.run(
+                ["git", "config", "user.name", "{{ cookiecutter.full_name }}"],
+                check=True,
+                cwd=PROJECT_DIRECTORY,
+            )
+            subprocess.run(
+                ["git", "config", "user.email", "{{ cookiecutter.email }}"],
+                check=True,
+                cwd=PROJECT_DIRECTORY,
+            )
+
+            # Add all files
+            subprocess.run(["git", "add", "."], check=True, cwd=PROJECT_DIRECTORY)
+
+            # Create initial commit
+            subprocess.run(
+                [
+                    "git",
+                    "commit",
+                    "-m",
+                    "Initial commit from cookiecutter-python-package",
+                ],
+                check=True,
+                cwd=PROJECT_DIRECTORY,
+            )
+            print("✓ Git repository initialized with initial commit")
+
+        except subprocess.CalledProcessError as e:
+            print(f"Warning: Git initialization failed: {e}")
+            print("You can initialize git manually later with:")
+            print("  git init")
+            print("  git add .")
+            print('  git commit -m "Initial commit"')
 
         print(
             "\n*** Project '{ cookiecutter.project_name }' has been created successfully! ***"
