@@ -1,10 +1,10 @@
-{%- if cookiecutter.use_pytest == "y" %}
 """Tests for {{ cookiecutter.project_slug }} core functionality."""
+{%- if cookiecutter.use_pytest == "y" %}
 
 import pytest
 
-from {{ cookiecutter.project_slug }}.core import (
-    {{ cookiecutter.project_slug.replace('_', ' ').title().replace(' ', '') }},
+from {{ cookiecutter.project_slug.replace('-', '_') }}.core import (
+    {{ cookiecutter.project_slug.replace('-', '_').replace('_', ' ').title().replace(' ', '') }},
     add_numbers,
     hello_world,
 )
@@ -31,7 +31,7 @@ def test_add_numbers():
 
 def test_main_class():
     """Test the main class."""
-    instance = {{ cookiecutter.project_slug.replace('_', ' ').title().replace(' ', '') }}("Test")
+    instance = {{ cookiecutter.project_slug.replace('-', '_').replace('_', ' ').title().replace(' ', '') }}("Test")
     assert instance.name == "Test"
     assert instance.greet() == "Hello, Test!"
     assert "Test" in repr(instance)
@@ -56,28 +56,28 @@ class TestMainClass:
 
     def test_initialization(self):
         """Test class initialization."""
-        instance = {{ cookiecutter.project_slug.replace('_', ' ').title().replace(' ', '') }}("TestName")
+        instance = {{ cookiecutter.project_slug.replace('-', '_').replace('_', ' ').title().replace(' ', '') }}("TestName")
         assert instance.name == "TestName"
 
     def test_greet_method(self):
         """Test the greet method."""
-        instance = {{ cookiecutter.project_slug.replace('_', ' ').title().replace(' ', '') }}("Developer")
+        instance = {{ cookiecutter.project_slug.replace('-', '_').replace('_', ' ').title().replace(' ', '') }}("Developer")
         result = instance.greet()
         assert result == "Hello, Developer!"
 
     def test_repr_method(self):
         """Test the __repr__ method."""
-        instance = {{ cookiecutter.project_slug.replace('_', ' ').title().replace(' ', '') }}("TestRepr")
+        instance = {{ cookiecutter.project_slug.replace('-', '_').replace('_', ' ').title().replace(' ', '') }}("TestRepr")
         repr_str = repr(instance)
         assert "TestRepr" in repr_str
         assert instance.__class__.__name__ in repr_str
-{%- else %}
-"""Tests for {{ cookiecutter.project_slug }} core functionality."""
 
-from {{ cookiecutter.project_slug }}.core import (
+{%- else %}
+
+from {{ cookiecutter.project_slug.replace('-', '_') }}.core import (
     add_numbers,
     hello_world,
-    {{ cookiecutter.project_slug.replace('_', ' ').title().replace(' ', '') }},
+    {{ cookiecutter.project_slug.replace('-', '_').replace('_', ' ').title().replace(' ', '') }},
 )
 
 
@@ -95,7 +95,7 @@ def test_add_numbers():
 
 def test_main_class():
     """Test the main class."""
-    instance = {{ cookiecutter.project_slug.replace('_', ' ').title().replace(' ', '') }}("Test")
+    instance = {{ cookiecutter.project_slug.replace('-', '_').replace('_', ' ').title().replace(' ', '') }}("Test")
     assert instance.name == "Test"
     assert instance.greet() == "Hello, Test!"
 

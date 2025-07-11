@@ -40,7 +40,7 @@ def add_numbers(a: float, b: float) -> float:
     return a + b
 
 
-class {{ cookiecutter.project_slug.replace('_', ' ').title().replace(' ', '') }}:
+class {{ cookiecutter.project_slug.replace('-', '_').replace('_', ' ').title().replace(' ', '') }}:
     """Main class for {{ cookiecutter.project_name }}."""
 
     def __init__(self, name: str) -> None:

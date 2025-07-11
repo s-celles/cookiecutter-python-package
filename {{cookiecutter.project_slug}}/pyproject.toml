@@ -97,14 +97,14 @@ Changelog = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutt
 {%- if cookiecutter.command_line_interface != "none" %}
 
 [project.scripts]
-{{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug }}.cli:main"
+{{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug.replace('-', '_') }}.cli:main"
 {%- endif %}
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-"{{ cookiecutter.project_slug }}" = ["py.typed"]
+"{{ cookiecutter.project_slug.replace('-', '_') }}" = ["py.typed"]
 
 {%- if cookiecutter.use_pytest == "y" %}
 
@@ -115,7 +115,7 @@ addopts = [
     "--strict-markers",
     "--strict-config",
 {%- if cookiecutter.use_coverage == "y" %}
-    "--cov={{ cookiecutter.project_slug }}",
+    "--cov={{ cookiecutter.project_slug.replace('-', '_') }}",
     "--cov-report=term-missing",
     "--cov-report=html",
     "--cov-report=xml",
@@ -135,7 +135,7 @@ markers = [
 {%- if cookiecutter.use_coverage == "y" %}
 
 [tool.coverage.run]
-source = ["src/{{ cookiecutter.project_slug }}"]
+source = ["src/{{ cookiecutter.project_slug.replace('-', '_') }}"]
 omit = [
     "tests/*",
     "*/tests/*",

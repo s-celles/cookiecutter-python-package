@@ -3,7 +3,7 @@
 {%- if cookiecutter.command_line_interface == "typer" %}
 from typer.testing import CliRunner
 
-from {{ cookiecutter.project_slug }}.cli import app
+from {{ cookiecutter.project_slug.replace('-', '_') }}.cli import app
 
 
 runner = CliRunner()
@@ -39,7 +39,7 @@ def test_cli_help():
 {%- elif cookiecutter.command_line_interface == "click" %}
 from click.testing import CliRunner
 
-from {{ cookiecutter.project_slug }}.cli import main
+from {{ cookiecutter.project_slug.replace('-', '_') }}.cli import main
 
 
 runner = CliRunner()
@@ -69,7 +69,7 @@ import io
 import sys
 from unittest.mock import patch
 
-from {{ cookiecutter.project_slug }}.cli import main, create_parser
+from {{ cookiecutter.project_slug.replace('-', '_') }}.cli import main, create_parser
 
 
 def test_parser_creation():
