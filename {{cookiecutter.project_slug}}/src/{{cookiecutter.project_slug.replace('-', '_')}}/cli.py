@@ -1,14 +1,13 @@
 {%- if cookiecutter.command_line_interface != "none" %}
 """Command line interface for {{ cookiecutter.project_name }}."""
-
 {%- if cookiecutter.command_line_interface == "typer" %}
+
 from typing import Annotated
 
 import typer
 
 from . import __version__
 from .core import hello_world
-
 
 app = typer.Typer(
     name="{{ cookiecutter.project_slug }}",

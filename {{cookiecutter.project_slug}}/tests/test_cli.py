@@ -1,10 +1,10 @@
 """Tests for CLI functionality."""
 {%- if cookiecutter.use_pytest == "y" and cookiecutter.command_line_interface != "none" %}
 {%- if cookiecutter.command_line_interface == "typer" %}
+
 from typer.testing import CliRunner
 
 from {{ cookiecutter.project_slug.replace('-', '_') }}.cli import app
-
 
 runner = CliRunner()
 
