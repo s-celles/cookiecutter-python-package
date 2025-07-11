@@ -1,4 +1,4 @@
-# Cookiecutter Python Package Template - Complete!
+# Template Summary
 
 ## What's Been Created
 
@@ -9,14 +9,14 @@ A modern, comprehensive cookiecutter template for Python packages with:
 cookiecutter-python-package/
 ├── cookiecutter.json              # Template configuration with 25+ options
 ├── README.md                      # Comprehensive documentation
-├── TOOLS_GUIDE.md                 # Detailed explanation of all tools
+├── docs/                          # Complete documentation site
 ├── requirements-dev.txt           # Development dependencies
 ├── hooks/
 │   └── post_gen_project.py        # Post-generation cleanup script
 ├── tests/
 │   └── test_template.py           # Template validation tests
 └── {{cookiecutter.project_slug}}/  # Generated project structure
-    ├── src/{{cookiecutter.project_slug}}/
+    ├── src/{{cookiecutter.project_slug.replace('-', '_')}}/
     │   ├── __init__.py
     │   ├── core.py                 # Main functionality
     │   ├── cli.py                  # CLI interface (Typer/Click/Argparse)
@@ -48,6 +48,7 @@ cookiecutter-python-package/
 
 | Category | Tools | Purpose |
 |----------|-------|---------|
+| **Package Management** | uv, pip | Ultra-fast package installation and resolution |
 | **Packaging** | pyproject.toml, src layout | Modern Python packaging (PEP 621) |
 | **Code Quality** | Ruff, MyPy, Bandit | Fast linting, type checking, security |
 | **Testing** | pytest, Coverage | Modern testing framework with coverage |
@@ -74,7 +75,7 @@ cookiecutter-python-package/
 pip install cookiecutter
 
 # Generate project
-cookiecutter path/to/cookiecutter-python-package
+cookiecutter https://github.com/s-celles/cookiecutter-python-package.git
 
 # Follow prompts to configure your package
 ```
@@ -99,11 +100,70 @@ cookiecutter path/to/cookiecutter-python-package
 | Type Checking | None | MyPy (optional) |
 | Security | None | Bandit + Safety |
 | CLI Options | Limited | Typer/Click/Argparse |
+| Package Manager | pip only | uv + pip support |
 | CI/CD | Travis | GitHub Actions |
 | Automation | Limited | pre-commit + extensive automation |
 
-This template brings Python packaging into 2024+ with modern tools, best practices, and comprehensive automation while remaining educational and flexible for developers of all levels.
+### 🎯 Template Philosophy
 
-## 🎊 Ready to Use!
+This template follows modern Python development principles:
+
+- **Convention over Configuration**: Sensible defaults that work out of the box
+- **Progressive Enhancement**: Start simple, add complexity as needed
+- **Developer Experience**: Tools that make development faster and more enjoyable
+- **Security by Default**: Built-in security scanning and best practices
+- **Community Standards**: Uses widely adopted tools and practices
+
+### 📊 Template Metrics
+
+- **25+ Configuration Options**: Highly customizable
+- **15+ Modern Tools**: Best-in-class Python development tools
+- **3 CLI Frameworks**: Typer, Click, Argparse support
+- **2 Documentation Systems**: MkDocs and Sphinx
+- **Cross-Platform**: Windows, macOS, Linux support
+- **Python 3.9+**: Modern Python version support
+
+### 🎊 Ready to Use!
 
 The template is complete and ready for production use. It includes everything needed for modern Python package development with optional components for teams of any size.
+
+## Generated Project Features
+
+### Core Structure
+- **Source layout** (`src/` directory) for better import isolation
+- **Type hints** throughout with `py.typed` marker
+- **Modern pyproject.toml** configuration (PEP 621)
+- **Comprehensive .gitignore** with Python-specific patterns
+
+### Quality Assurance
+- **Automated testing** with pytest and fixtures
+- **Code coverage** reporting with HTML/XML output
+- **Linting and formatting** with Ruff (ultra-fast)
+- **Type checking** with MyPy (optional)
+- **Security scanning** with Bandit and Safety
+
+### Development Workflow
+- **Pre-commit hooks** for quality gates
+- **GitHub Actions** for CI/CD
+- **Dependabot** for dependency updates
+- **Make/Nox/Tox** for task automation
+
+### CLI Applications
+- **Entry point** configuration in pyproject.toml
+- **Argument parsing** with Typer, Click, or Argparse
+- **Built-in testing** for CLI commands
+- **Version information** and help text
+
+### Documentation
+- **Professional docs** with MkDocs or Sphinx
+- **README templates** with badges and examples
+- **CHANGELOG** following Keep a Changelog format
+- **Contributing guidelines** for open source projects
+
+### Deployment
+- **Docker support** with multi-stage builds
+- **PyPI publishing** workflows
+- **Semantic versioning** with automated releases
+- **Development containers** for VS Code
+
+This comprehensive template ensures your Python package follows modern best practices from day one!

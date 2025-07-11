@@ -1,0 +1,96 @@
+site_name: Cookiecutter Python Package
+site_description: A modern cookiecutter template for Python packages with best practices built-in
+site_url: https://s-celles.github.io/cookiecutter-python-package/
+repo_url: https://github.com/s-celles/cookiecutter-python-package
+repo_name: s-celles/cookiecutter-python-package
+
+theme:
+  name: material
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - attr_list
+  - md_in_html
+  - tables
+  - pymdownx.emoji
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Quick Start: getting-started/quick-start.md
+      - Installation: getting-started/installation.md
+      - Usage Examples: getting-started/examples.md
+  - Configuration:
+      - Template Options: configuration/template-options.md
+      - Tool Selection: configuration/tool-selection.md
+      - Best Practices: configuration/best-practices.md
+  - Tools Guide:
+      - Overview: tools/overview.md
+      - Packaging & Build: tools/packaging.md
+      - Testing & Quality: tools/testing.md
+      - Linting & Formatting: tools/linting.md
+      - Security: tools/security.md
+      - CI/CD: tools/cicd.md
+      - Documentation: tools/documentation.md
+  - Development:
+      - Contributing: development/contributing.md
+      - Development Setup: development/setup.md
+      - Testing the Template: development/testing.md
+      - Release Process: development/releases.md
+  - Reference:
+      - Template Summary: reference/template-summary.md
+      - Generated Structure: reference/project-structure.md
+      - FAQ: reference/faq.md
+      - Troubleshooting: reference/troubleshooting.md

@@ -1,4 +1,4 @@
-# Contributing to Cookiecutter Python Package Template
+# Contributing
 
 Thank you for your interest in contributing to this modern Python package template! This guide will help you get started.
 
@@ -116,7 +116,7 @@ When modifying the template, always test:
 ### 📚 Documentation
 
 - **Usage Examples**: Add more usage examples and configurations
-- **Tool Explanations**: Improve `TOOLS_GUIDE.md` with better explanations
+- **Tool Explanations**: Improve documentation with better explanations
 - **README Updates**: Keep documentation current and comprehensive
 
 ### 🐛 Bug Fixes
@@ -172,7 +172,7 @@ Examples:
 ```bash
 feat: add support for Poetry as build backend
 fix: resolve Windows path issues in hooks
-docs: update TOOLS_GUIDE with MyPy explanation
+docs: update tools guide with MyPy explanation
 test: add integration tests for CLI generation
 ```
 
@@ -188,8 +188,8 @@ test: add integration tests for CLI generation
    ```
 
 2. **Update Documentation**
-   - Update `TOOLS_GUIDE.md` for new tools
-   - Update `README.md` for new features
+   - Update documentation for new tools
+   - Update README for new features
    - Add docstrings and comments
 
 3. **Test Multiple Configurations**
@@ -273,16 +273,7 @@ cookiecutter-python-package/
 
 - [Cookiecutter Documentation](https://cookiecutter.readthedocs.io/)
 - [Python Packaging Guide](https://packaging.python.org/)
-- [Modern Python Tools](https://github.com/s-celles/cookiecutter-python-package/blob/main/TOOLS_GUIDE.md)
-
-## 📊 Project Metrics
-
-We track:
-
-- **Template generation success rate**
-- **Generated project quality scores**
-- **Test coverage** (aim for >95%)
-- **Documentation completeness**
+- [Modern Python Tools](../tools/overview.md)
 
 ## 🎉 Recognition
 
