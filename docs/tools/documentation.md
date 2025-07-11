@@ -115,13 +115,13 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Getting Started:
-      - Quick Start: getting-started/quick-start.md
+      - Quick Start: ../getting-started/quick-start.md
       - Installation: getting-started/installation.md
   - User Guide:
       - Configuration: user-guide/configuration.md
-      - Usage Examples: user-guide/examples.md
+      - Usage Examples: ../getting-started/examples.md
   - API Reference:
-      - Core Module: api/core.md
+      - Core Module: ../reference/template-summary.md
       - CLI Module: api/cli.md
   - Development:
       - Contributing: development/contributing.md
@@ -296,9 +296,9 @@ pip install my-package
 
 ## Next Steps
 
-- [Quick Start Guide](getting-started/quick-start.md)
-- [API Reference](api/core.md)
-- [Examples](user-guide/examples.md)
+- [Quick Start Guide](../getting-started/quick-start.md)
+- [Template Reference](../reference/template-summary.md)
+- [Examples](../getting-started/examples.md)
 ```
 
 #### API Documentation

@@ -413,7 +413,7 @@ Full documentation is available at [docs.example.com](https://docs.example.com).
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+See [CONTRIBUTING.md](../development/contributing.md) for contribution guidelines.
 
 ## License
 
