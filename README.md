@@ -29,7 +29,7 @@ cookiecutter https://github.com/s-celles/cookiecutter-python-package.git
 
 ## � Documentation
 
-For complete documentation, visit: **[Documentation Site](docs/)**
+For complete documentation, visit: **[Documentation Site](https://s-celles.github.io/cookiecutter-python-package)**
 
 ### Quick Links
 
