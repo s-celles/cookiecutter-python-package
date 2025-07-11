@@ -1,0 +1,18 @@
+include README.md
+include LICENSE
+{%- if cookiecutter.create_changelog == "y" %}
+include CHANGELOG.md
+{%- endif %}
+{%- if cookiecutter.create_contributing == "y" %}
+include CONTRIBUTING.md
+{%- endif %}
+{%- if cookiecutter.create_code_of_conduct == "y" %}
+include CODE_OF_CONDUCT.md
+{%- endif %}
+include pyproject.toml
+recursive-include src *.py
+recursive-include src *.typed
+recursive-exclude tests *
+recursive-exclude docs *
+global-exclude *.pyc
+global-exclude __pycache__

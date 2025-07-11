@@ -1,0 +1,54 @@
+{%- if cookiecutter.use_github_actions == "y" %}
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+    
+    - name: Build package
+      run: |
+        python -m build
+    
+    - name: Check package
+      run: |
+        twine check dist/*
+    
+    - name: Publish to PyPI
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: {% raw %}${{ secrets.PYPI_API_TOKEN }}{% endraw %}
+      run: |
+        twine upload dist/*
+    
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+      with:
+        tag_name: {% raw %}${{ github.ref }}{% endraw %}
+        release_name: Release {% raw %}${{ github.ref }}{% endraw %}
+        draft: false
+        prerelease: false
+{%- endif %}

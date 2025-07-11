@@ -1,0 +1,63 @@
+{%- if cookiecutter.use_pre_commit == "y" %}
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: debug-statements
+
+{%- if cookiecutter.use_ruff == "y" %}
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+{%- endif %}
+
+{%- if cookiecutter.use_mypy == "y" %}
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.11.2
+    hooks:
+      - id: mypy
+        additional_dependencies: []
+        args: [--ignore-missing-imports]
+        exclude: ^(tests/|docs/)
+{%- endif %}
+
+{%- if cookiecutter.use_bandit == "y" %}
+  - repo: https://github.com/pycqa/bandit
+    rev: 1.7.10
+    hooks:
+      - id: bandit
+        args: [-r, src/{{ cookiecutter.project_slug }}/]
+        exclude: tests/
+{%- endif %}
+
+{%- if cookiecutter.use_pytest == "y" %}
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: python -m pytest
+        language: system
+        types: [python]
+        pass_filenames: false
+        always_run: true
+        args: [-v, --tb=short]
+{%- endif %}
+
+{%- if cookiecutter.use_safety == "y" %}
+  # Note: Safety checks can be added here if needed
+  # - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+  #   rev: v1.3.2
+  #   hooks:
+  #     - id: python-safety-dependencies-check
+{%- endif %}
+{%- endif %}

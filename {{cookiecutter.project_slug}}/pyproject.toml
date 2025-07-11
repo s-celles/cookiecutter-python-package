@@ -1,0 +1,248 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "{{ cookiecutter.project_slug }}"
+version = "{{ cookiecutter.version }}"
+description = "{{ cookiecutter.project_short_description }}"
+readme = "README.md"
+license = {text = "{{ cookiecutter.license }}"}
+authors = [
+    {name = "{{ cookiecutter.full_name }}", email = "{{ cookiecutter.email }}"}
+]
+maintainers = [
+    {name = "{{ cookiecutter.full_name }}", email = "{{ cookiecutter.email }}"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: {{ cookiecutter.license }} License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["{{ cookiecutter.project_slug }}", "python"]
+requires-python = "{{ cookiecutter.python_requires }}"
+dependencies = [
+{%- if cookiecutter.command_line_interface == "typer" %}
+    "typer>=0.9.0",
+{%- elif cookiecutter.command_line_interface == "click" %}
+    "click>=8.0.0",
+{%- endif %}
+    # Add your runtime dependencies here
+]
+
+[project.optional-dependencies]
+dev = [
+{%- if cookiecutter.use_pytest == "y" %}
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "pytest-xdist>=3.0",
+{%- endif %}
+{%- if cookiecutter.use_ruff == "y" %}
+    "ruff>=0.1.0",
+{%- endif %}
+{%- if cookiecutter.use_mypy == "y" %}
+    "mypy>=1.0",
+{%- endif %}
+{%- if cookiecutter.use_pre_commit == "y" %}
+    "pre-commit>=3.0",
+{%- endif %}
+{%- if cookiecutter.use_bandit == "y" %}
+    "bandit>=1.7",
+{%- endif %}
+{%- if cookiecutter.use_safety == "y" %}
+    "safety>=2.0",
+{%- endif %}
+{%- if cookiecutter.use_tox == "y" %}
+    "tox>=4.0",
+{%- endif %}
+{%- if cookiecutter.use_nox == "y" %}
+    "nox>=2023.4.22",
+{%- endif %}
+{%- if cookiecutter.use_commitizen == "y" %}
+    "commitizen>=3.0",
+{%- endif %}
+]
+{%- if cookiecutter.use_sphinx == "y" %}
+docs = [
+    "sphinx>=7.0",
+    "sphinx-rtd-theme>=1.3",
+    "myst-parser>=2.0",
+]
+{%- elif cookiecutter.use_mkdocs == "y" %}
+docs = [
+    "mkdocs>=1.5",
+    "mkdocs-material>=9.0",
+    "mkdocs-git-revision-date-localized-plugin>=1.2",
+]
+{%- endif %}
+
+[project.urls]
+Homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}"
+Documentation = "https://{{ cookiecutter.github_username }}.github.io/{{ cookiecutter.project_slug }}/"
+Repository = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}"
+Issues = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}/issues"
+{%- if cookiecutter.create_changelog == "y" %}
+Changelog = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}/blob/main/CHANGELOG.md"
+{%- endif %}
+
+{%- if cookiecutter.command_line_interface != "none" %}
+
+[project.scripts]
+{{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug }}.cli:main"
+{%- endif %}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"{{ cookiecutter.project_slug }}" = ["py.typed"]
+
+{%- if cookiecutter.use_pytest == "y" %}
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+{%- if cookiecutter.use_coverage == "y" %}
+    "--cov={{ cookiecutter.project_slug }}",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+{%- endif %}
+]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+{%- endif %}
+
+{%- if cookiecutter.use_coverage == "y" %}
+
+[tool.coverage.run]
+source = ["src/{{ cookiecutter.project_slug }}"]
+omit = [
+    "tests/*",
+    "*/tests/*",
+    "*/__pycache__/*",
+    "*/site-packages/*",
+    ".venv/*",
+    "venv/*",
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.coverage.xml]
+output = "coverage.xml"
+{%- endif %}
+
+{%- if cookiecutter.use_ruff == "y" %}
+
+[tool.ruff]
+# Ruff configuration
+line-length = 88
+target-version = "py39"
+
+[tool.ruff.lint]
+# Enable specific rule sets
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "ARG", # flake8-unused-arguments
+    "SIM", # flake8-simplify
+    "PL",  # pylint
+]
+
+ignore = [
+    "E501",  # line too long (handled by formatter)
+    "B905",  # zip() without an explicit strict= parameter
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["ARG", "PLR2004"]  # Allow unused args and magic values in tests
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+{%- endif %}
+
+{%- if cookiecutter.use_mypy == "y" %}
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+{%- endif %}
+
+{%- if cookiecutter.use_bandit == "y" %}
+
+[tool.bandit]
+exclude_dirs = ["tests", ".venv", "venv"]
+skips = ["B101"]  # Skip test for assert statements (common in tests)
+{%- endif %}
+
+{%- if cookiecutter.use_commitizen == "y" %}
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_scheme = "semver"
+version_provider = "pep621"
+update_changelog_on_bump = true
+{%- endif %}

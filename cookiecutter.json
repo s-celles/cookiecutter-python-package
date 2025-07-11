@@ -1,0 +1,52 @@
+{
+  "full_name": "Your Name",
+  "email": "your.email@example.com",
+  "github_username": "yourusername",
+  "project_name": "My Python Package",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "project_short_description": "A modern Python package with best practices built-in.",
+  "pypi_username": "{{ cookiecutter.github_username }}",
+  "version": "0.1.0",
+  "python_requires": ">=3.9",
+  "license": ["MIT", "Apache-2.0", "BSD-3-Clause", "GPL-3.0", "LGPL-3.0", "MPL-2.0", "Unlicense", "Proprietary"],
+  
+  "_template": "---",
+  "_comment": "Code quality and development tools (optional but recommended)",
+  "use_ruff": ["y", "n"],
+  "use_mypy": ["y", "n"],
+  "use_pytest": ["y", "n"],
+  "use_coverage": ["y", "n"],
+  "use_pre_commit": ["y", "n"],
+  "use_bandit": ["y", "n"],
+  "use_safety": ["y", "n"],
+  
+  "_docs": "---",
+  "_comment_docs": "Documentation tools",
+  "use_sphinx": ["n", "y"],
+  "use_mkdocs": ["y", "n"],
+  
+  "_ci_cd": "---", 
+  "_comment_ci": "CI/CD and automation",
+  "use_github_actions": ["y", "n"],
+  "use_dependabot": ["y", "n"],
+  "use_codecov": ["n", "y"],
+  
+  "_cli": "---",
+  "_comment_cli": "Command line interface",
+  "command_line_interface": ["typer", "click", "argparse", "none"],
+  
+  "_project_management": "---",
+  "_comment_project": "Project management tools",
+  "use_tox": ["n", "y"],
+  "use_nox": ["n", "y"],
+  "use_commitizen": ["n", "y"],
+  "use_semantic_release": ["n", "y"],
+  
+  "_extras": "---",
+  "_comment_extras": "Additional features",
+  "create_changelog": ["y", "n"],
+  "create_contributing": ["y", "n"],
+  "create_code_of_conduct": ["y", "n"],
+  "use_docker": ["n", "y"],
+  "use_devcontainer": ["n", "y"]
+}

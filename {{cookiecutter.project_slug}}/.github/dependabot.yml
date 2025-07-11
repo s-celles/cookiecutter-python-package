@@ -1,0 +1,26 @@
+{%- if cookiecutter.use_dependabot == "y" %}
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    assignees:
+      - "{{ cookiecutter.github_username }}"
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: "scope"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    assignees:
+      - "{{ cookiecutter.github_username }}"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+{%- endif %}

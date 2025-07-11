@@ -1,0 +1,180 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cookiecutter-python-package"
+version = "2.0.0"
+description = "A modern cookiecutter template for Python packages with best practices built-in"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Sébastien Celles", email = "s.celles@gmail.com"}
+]
+maintainers = [
+    {name = "Sébastien Celles", email = "s.celles@gmail.com"}
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+keywords = ["cookiecutter", "template", "python", "packaging", "modern", "best-practices"]
+requires-python = ">=3.9"
+dependencies = [
+    "cookiecutter>=2.6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "pytest-xdist>=3.0",
+    "pytest-cookies>=0.7.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0",
+    "bandit>=1.7",
+    "safety>=2.0",
+    "pre-commit>=3.0",
+    "pydantic>=2.0",
+    "jinja2>=3.0",
+    "pyyaml>=6.0",
+    "tomli>=2.0.0;python_version<'3.11'",  # For TOML parsing in older Python
+    "types-PyYAML>=6.0",  # Type stubs for MyPy
+    "types-requests>=2.0",  # Type stubs for requests if needed
+]
+docs = [
+    "mkdocs>=1.5",
+    "mkdocs-material>=9.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/s-celles/cookiecutter-python-package"
+Documentation = "https://s-celles.github.io/cookiecutter-python-package/"
+Repository = "https://github.com/s-celles/cookiecutter-python-package"
+Issues = "https://github.com/s-celles/cookiecutter-python-package/issues"
+Changelog = "https://github.com/s-celles/cookiecutter-python-package/blob/main/CHANGELOG.md"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--cov=tests",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+    "bake: marks tests that bake projects",
+]
+
+[tool.coverage.run]
+source = ["tests", "hooks"]
+omit = [
+    "*/tests/test_bake_project.py",  # Exclude baked project tests from coverage
+    "*/__pycache__/*",
+    "*/site-packages/*",
+    ".venv/*",
+    "venv/*",
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "ARG", # flake8-unused-arguments
+    "SIM", # flake8-simplify
+    "PL",  # pylint
+]
+
+ignore = [
+    "E501",  # line too long (handled by formatter)
+    "B905",  # zip() without an explicit strict= parameter
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["ARG", "PLR2004"]  # Allow unused args and magic values in tests
+"hooks/*" = ["T201"]  # Allow print statements in hooks
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.bandit]
+exclude_dirs = ["tests", ".venv", "venv"]
+skips = ["B101"]  # Skip test for assert statements (common in tests)

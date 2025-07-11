@@ -1,0 +1,169 @@
+name: Template Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run tests weekly to catch issues with dependencies
+    - cron: '0 6 * * 1'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+        
+    - name: Lint with Ruff
+      run: |
+        ruff check .
+        ruff format --check .
+        
+    - name: Type check with MyPy
+      run: mypy hooks/ tests/
+      
+    - name: Security check with Bandit
+      run: bandit -r hooks/ -ll
+      
+    - name: Validate cookiecutter.json
+      run: python -c "import json; json.load(open('cookiecutter.json'))"
+
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+        exclude:
+          # Reduce matrix size - test all Python versions on Ubuntu, fewer on others
+          - os: windows-latest
+            python-version: '3.9'
+          - os: windows-latest
+            python-version: '3.10'
+          - os: macos-latest
+            python-version: '3.9'
+          - os: macos-latest
+            python-version: '3.10'
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+        
+    - name: Run fast tests
+      run: pytest -m "not slow" -v
+      
+    - name: Run slow tests
+      run: pytest -m "slow" -v
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+
+  test-generated-projects:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config:
+          - name: "minimal"
+            use_ruff: "n"
+            use_mypy: "n"
+            use_github_actions: "n"
+            command_line_interface: "none"
+          - name: "basic-cli"
+            use_ruff: "y"
+            use_mypy: "n"
+            use_github_actions: "n"
+            command_line_interface: "typer"
+          - name: "full-quality"
+            use_ruff: "y"
+            use_mypy: "y"
+            use_github_actions: "y"
+            command_line_interface: "typer"
+            use_coverage: "y"
+            use_bandit: "y"
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: Install cookiecutter
+      run: |
+        python -m pip install --upgrade pip
+        pip install cookiecutter
+        
+    - name: Generate project with ${{ matrix.config.name }} config
+      run: |
+        cookiecutter . --no-input \
+          project_name="Test Package ${{ matrix.config.name }}" \
+          project_slug="test_package_${{ matrix.config.name }}" \
+          use_ruff="${{ matrix.config.use_ruff }}" \
+          use_mypy="${{ matrix.config.use_mypy }}" \
+          use_github_actions="${{ matrix.config.use_github_actions }}" \
+          command_line_interface="${{ matrix.config.command_line_interface }}" \
+          use_coverage="${{ matrix.config.use_coverage || 'n' }}" \
+          use_bandit="${{ matrix.config.use_bandit || 'n' }}"
+          
+    - name: Test generated project
+      run: |
+        cd "test_package_${{ matrix.config.name }}"
+        python -m pip install -e ".[dev]"
+        python -m pytest -v
+        
+    - name: Test generated project quality tools
+      if: matrix.config.use_ruff == 'y'
+      run: |
+        cd "test_package_${{ matrix.config.name }}"
+        python -m ruff check src/ tests/
+        python -m ruff format --check src/ tests/
+        
+    - name: Test generated project type checking
+      if: matrix.config.use_mypy == 'y'
+      run: |
+        cd "test_package_${{ matrix.config.name }}"
+        python -m mypy src/
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+        
+    - name: Run tests with coverage
+      run: pytest --cov=. --cov-report=xml --cov-report=html
+      
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: template-tests
+        name: template-coverage

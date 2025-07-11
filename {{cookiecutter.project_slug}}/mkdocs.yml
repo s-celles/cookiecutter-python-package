@@ -1,0 +1,63 @@
+{%- if cookiecutter.use_mkdocs == "y" %}
+site_name: {{ cookiecutter.project_name }}
+site_description: {{ cookiecutter.project_short_description }}
+site_author: {{ cookiecutter.full_name }}
+site_url: https://{{ cookiecutter.github_username }}.github.io/{{ cookiecutter.project_slug }}
+
+repo_name: {{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}
+repo_url: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Usage: usage.md
+  - API Reference: api.md
+{%- if cookiecutter.create_contributing == "y" %}
+  - Contributing: contributing.md
+{%- endif %}
+{%- if cookiecutter.create_changelog == "y" %}
+  - Changelog: changelog.md
+{%- endif %}
+{%- endif %}
