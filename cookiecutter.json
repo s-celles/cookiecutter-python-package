@@ -29,7 +29,7 @@
   "_comment_ci": "CI/CD and automation",
   "use_github_actions": ["y", "n"],
   "use_dependabot": ["y", "n"],
-  "use_codecov": ["n", "y"],
+  "use_codecov": ["y", "n"],
 
   "_cli": "---",
   "_comment_cli": "Command line interface",

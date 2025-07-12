@@ -13,7 +13,7 @@ This template provides extensive customization options through `cookiecutter.jso
 - **`project_short_description`**: Brief project description for README and package metadata
 - **`version`**: Initial version number (default: 0.1.0)
 - **`python_requires`**: Minimum Python version (default: >=3.9)
-- **`license`**: License type (MIT, Apache-2.0, BSD-3-Clause, GPL-3.0, etc.)
+- **`license`**: License type (MIT, Apache-2.0, BSD-3-Clause, GPL-3.0, LGPL-3.0, MPL-2.0, Unlicense, Proprietary)
 
 ### Example Configuration
 ```json
@@ -257,7 +257,11 @@ Some tools work better together:
 Make sure your license choice is compatible with your dependencies and usage:
 - **MIT**: Most permissive, good for libraries
 - **Apache-2.0**: Includes patent grant, good for larger projects
-- **GPL-3.0**: Copyleft, requires derivatives to be GPL
 - **BSD-3-Clause**: Similar to MIT with additional attribution clause
+- **GPL-3.0**: Copyleft, requires derivatives to be GPL
+- **LGPL-3.0**: Lesser GPL, allows linking with proprietary code
+- **MPL-2.0**: Mozilla Public License, file-level copyleft
+- **Unlicense**: Public domain dedication
+- **Proprietary**: Custom license for private/commercial use
 
 This flexible configuration system allows you to create exactly the Python package structure you need, from simple scripts to complex enterprise applications.
