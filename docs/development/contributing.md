@@ -30,6 +30,7 @@ This cookiecutter template helps developers create modern Python packages with b
 3. **Install Pre-commit Hooks**
    ```bash
    pre-commit install
+   pre-commit install --hook-type commit-msg
    ```
 
 4. **Run Tests**
@@ -158,7 +159,7 @@ line-length = 88
 
 ## 📝 Commit Convention
 
-We use [Conventional Commits](https://www.conventionalcommits.org/):
+We use [Conventional Commits](https://www.conventionalcommits.org/) and enforce this format with a pre-commit hook:
 
 - `feat:` - New features
 - `fix:` - Bug fixes
@@ -167,6 +168,7 @@ We use [Conventional Commits](https://www.conventionalcommits.org/):
 - `refactor:` - Code refactoring
 - `style:` - Code style changes
 - `ci:` - CI/CD changes
+- `chore:` - Build, dependencies, tools
 
 Examples:
 ```bash
@@ -175,6 +177,8 @@ fix: resolve Windows path issues in hooks
 docs: update tools guide with MyPy explanation
 test: add integration tests for CLI generation
 ```
+
+**Note**: The commitizen pre-commit hook will automatically validate your commit messages. Non-conventional commits will be rejected.
 
 ## 🔍 Review Process
 

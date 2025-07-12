@@ -53,6 +53,14 @@ repos:
         args: [-v, --tb=short]
 {%- endif %}
 
+{%- if cookiecutter.use_commitizen == "y" %}
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.21.3
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+{%- endif %}
+
 {%- if cookiecutter.use_safety == "y" %}
   # Note: Safety checks can be added here if needed
   # - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
