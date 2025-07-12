@@ -35,7 +35,7 @@ For detailed setup instructions, see our [Quick Start Tutorial](docs/getting-sta
 Customize your generated project by choosing from these options:
 
 - **Code Quality**: Ruff, MyPy, Bandit, Safety
-- **Testing**: pytest, coverage reporting  
+- **Testing**: pytest, coverage reporting
 - **Documentation**: MkDocs or Sphinx
 - **CLI Framework**: Typer, Click, or Argparse
 - **Package Management**: uv or pip

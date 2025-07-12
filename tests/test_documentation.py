@@ -60,7 +60,9 @@ class TestDocumentation:
             content = security_doc.read_text(encoding="utf-8")
             security_tools = ["bandit", "safety"]
             for tool in security_tools:
-                assert tool.lower() in content.lower(), f"Security doc should mention {tool}"
+                assert tool.lower() in content.lower(), (
+                    f"Security doc should mention {tool}"
+                )
 
         # Check for sections explaining importance
         assert "Why important" in content, "Should explain why tools are important"
