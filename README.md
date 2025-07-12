@@ -17,6 +17,32 @@ pip install cookiecutter
 cookiecutter https://github.com/s-celles/cookiecutter-python-package.git
 ```
 
+## 📋 Usage
+
+After generating your project:
+
+1. **Navigate to your project**: `cd your-project-name`
+2. **Set up development environment**: `pip install -e .[dev]`
+3. **Configure tools**: Choose from Ruff, MyPy, pytest, pre-commit, and more
+4. **Start developing**: Write your code in `src/` with tests in `tests/`
+5. **Run quality checks**: `make lint`, `make test`, `make type-check`
+6. **Commit and push**: Pre-commit hooks ensure code quality
+
+For detailed setup instructions, see our [Quick Start Tutorial](docs/getting-started/quick-start.md).
+
+## ⚙️ Template Options
+
+Customize your generated project by choosing from these options:
+
+- **Code Quality**: Ruff, MyPy, Bandit, Safety
+- **Testing**: pytest, coverage reporting  
+- **Documentation**: MkDocs or Sphinx
+- **CLI Framework**: Typer, Click, or Argparse
+- **Package Management**: uv or pip
+- **Automation**: pre-commit, GitHub Actions, Dependabot
+
+See [Template Configuration](docs/configuration/template-options.md) for all available options.
+
 ## ✨ Features
 
 - 📦 Modern `pyproject.toml` configuration (PEP 621)

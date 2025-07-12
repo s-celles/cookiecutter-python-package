@@ -35,28 +35,32 @@ class TestDocumentation:
         for section in required_sections:
             assert section in content, f"README should contain {section} section"
 
-    def test_tools_guide_completeness(self, template_dir: Path) -> None:
-        """Test that TOOLS_GUIDE.md is comprehensive."""
-        tools_guide = template_dir / "TOOLS_GUIDE.md"
-        assert tools_guide.exists(), "Should have TOOLS_GUIDE.md"
+    def test_tools_documentation_structure(self, template_dir: Path) -> None:
+        """Test that tools documentation structure exists in docs/ folder."""
+        docs_tools_dir = template_dir / "docs" / "tools"
+        assert docs_tools_dir.exists(), "Should have docs/tools/ directory"
 
-        content = tools_guide.read_text(encoding="utf-8")
-
-        # Check for all major tools
-        major_tools = [
-            "pytest",
-            "ruff",
-            "mypy",
-            "bandit",
-            "safety",
-            "pre-commit",
-            "GitHub Actions",
-            "MkDocs",
-            "Sphinx",
+        # Check for key documentation files
+        expected_docs = [
+            "overview.md",
+            "security.md",
+            "testing.md",
+            "linting.md",
+            "cicd.md",
+            "documentation.md",
         ]
 
-        for tool in major_tools:
-            assert tool in content, f"TOOLS_GUIDE should mention {tool}"
+        for doc_file in expected_docs:
+            file_path = docs_tools_dir / doc_file
+            assert file_path.exists(), f"Should have docs/tools/{doc_file}"
+
+        # Check that security.md mentions major security tools
+        security_doc = docs_tools_dir / "security.md"
+        if security_doc.exists():
+            content = security_doc.read_text(encoding="utf-8")
+            security_tools = ["bandit", "safety"]
+            for tool in security_tools:
+                assert tool.lower() in content.lower(), f"Security doc should mention {tool}"
 
         # Check for sections explaining importance
         assert "Why important" in content, "Should explain why tools are important"

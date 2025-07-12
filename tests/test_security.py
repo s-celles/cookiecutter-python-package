@@ -81,8 +81,21 @@ class TestSecurity:
 
         for file_path in template_files:
             if file_path.is_file():
-                # Skip test files that might contain pattern examples
-                if "test_security.py" in str(file_path):
+                # Skip test files and documentation that might contain pattern examples
+                file_path_str = str(file_path.relative_to(template_dir)).replace("\\", "/")
+                skip_files = [
+                    "test_security.py",
+                    "docs/tools/security.md",  # Contains example code with mock passwords
+                ]
+                
+                # Check if any skip file path matches
+                should_skip = False
+                for skip_file in skip_files:
+                    if skip_file in file_path_str or file_path_str.endswith(skip_file):
+                        should_skip = True
+                        break
+                
+                if should_skip:
                     continue
 
                 try:
