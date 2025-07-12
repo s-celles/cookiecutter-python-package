@@ -61,6 +61,12 @@ This page provides links to important Python standards, PEPs (Python Enhancement
 
 ## 🏗️ Project Structure Standards
 
+### Build Backends
+- **setuptools**: [https://setuptools.pypa.io/](https://setuptools.pypa.io/) - Traditional, mature Python build system
+- **hatchling**: [https://hatch.pypa.io/](https://hatch.pypa.io/) - Modern, fast build backend
+- **flit**: [https://flit.pypa.io/](https://flit.pypa.io/) - Simple build backend for pure Python packages
+- **pdm**: [https://pdm-project.org/](https://pdm-project.org/) - Modern dependency management and build backend
+
 ### src Layout
 - **Reference**: [Python Packaging Guide - src layout](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/)
 - **Why adopted**:

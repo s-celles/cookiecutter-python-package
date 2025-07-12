@@ -34,6 +34,7 @@ For detailed setup instructions, see our [Quick Start Tutorial](docs/getting-sta
 
 Customize your generated project by choosing from these options:
 
+- **Build Backend**: setuptools, hatchling, flit, or pdm
 - **Code Quality**: Ruff, MyPy, Bandit, Safety
 - **Testing**: pytest, coverage reporting
 - **Documentation**: MkDocs or Sphinx

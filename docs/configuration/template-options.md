@@ -54,6 +54,12 @@ This template provides extensive customization options through `cookiecutter.jso
   - CI/CD integration
 
 ### Package Management
+- **`build_backend`** (default: setuptools): Build system backend
+  - **setuptools**: Maximum compatibility, mature ecosystem
+  - **hatchling**: Modern, fast builds, minimal configuration
+  - **flit**: Ultra-simple for pure Python packages
+  - **pdm**: Advanced features with dependency locking
+
 - **`use_uv`** (default: y): Modern Python package manager
   - Ultra-fast dependency resolution
   - Built-in virtual environment management
@@ -141,6 +147,21 @@ This template provides extensive customization options through `cookiecutter.jso
 | **Click** | Mature, extensive features, plugins | More verbose | Complex CLIs, existing Click knowledge |
 | **Argparse** | Standard library, no dependencies | Verbose, limited features | Simple CLIs, minimal dependencies |
 
+### Build Backend Comparison
+
+| Backend | Pros | Cons | Best For |
+|---------|------|------|----------|
+| **setuptools** | Maximum compatibility, mature ecosystem | Slower builds, more configuration | Legacy projects, complex builds |
+| **hatchling** | Modern, fast, minimal config | Newer tool, smaller ecosystem | New projects, simple packages |
+| **flit** | Ultra-simple, fast builds | Limited features, pure Python only | Simple libraries, minimal deps |
+| **pdm** | Advanced features, dependency locking | More complex, requires PDM workflow | Team projects, complex dependencies |
+
+!!! tip "Build Backend Selection"
+    - **New projects**: Start with `hatchling` for modern best practices
+    - **Legacy migration**: Use `setuptools` for maximum compatibility
+    - **Simple libraries**: Consider `flit` for minimal configuration
+    - **Team development**: `pdm` offers advanced dependency management
+
 ## Advanced Options
 
 ### Testing & Quality
@@ -172,6 +193,7 @@ This template provides extensive customization options through `cookiecutter.jso
 #### Minimal Package
 ```bash
 # Answers for minimal setup
+build_backend: setuptools
 use_ruff: y
 use_mypy: n
 use_pytest: y
@@ -186,6 +208,7 @@ command_line_interface: none
 #### Library Package
 ```bash
 # Answers for library development
+build_backend: hatchling
 use_ruff: y
 use_mypy: y
 use_pytest: y
@@ -201,6 +224,7 @@ command_line_interface: none
 #### CLI Application
 ```bash
 # Answers for CLI application
+build_backend: hatchling
 use_ruff: y
 use_mypy: y
 use_pytest: y
@@ -216,6 +240,7 @@ command_line_interface: typer
 #### Enterprise Package
 ```bash
 # Answers for enterprise/team development
+build_backend: pdm
 use_ruff: y
 use_mypy: y
 use_pytest: y

@@ -98,6 +98,7 @@ This modern toolchain transforms Python development from manual, error-prone pro
 
 For detailed information about specific tool categories, see:
 
+- [Build Backend Selection](build-backends.md) - Choose the right build system for your project
 - [Packaging & Build Tools](packaging.md)
 - [Testing & Quality Tools](testing.md)
 - [Linting & Formatting Tools](linting.md)

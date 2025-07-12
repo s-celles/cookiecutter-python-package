@@ -37,6 +37,7 @@
 
   "_project_management": "---",
   "_comment_project": "Project management tools",
+  "build_backend": ["setuptools", "hatchling", "flit", "pdm"],
   "use_uv": ["y", "n"],
   "use_tox": ["n", "y"],
   "use_nox": ["n", "y"],

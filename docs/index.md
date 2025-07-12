@@ -26,6 +26,7 @@ This template creates a Python package with modern best practices and industry-s
 ### 📦 **Modern Package Structure**
 - **Source layout** (`src/` directory) for cleaner organization
 - **PEP 621** compliant `pyproject.toml` configuration
+- **Build backend selection** (setuptools, hatchling, flit, or pdm)
 - **Type hints** and `py.typed` marker for better IDE support
 - **Entry points** for CLI applications
 

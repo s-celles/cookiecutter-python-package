@@ -52,6 +52,8 @@ def minimal_context() -> dict[str, Any]:
         "create_code_of_conduct": "n",
         "use_docker": "n",
         "use_devcontainer": "n",
+        "build_backend": "setuptools",
+        "use_uv": "n",
     }
 
 
@@ -90,6 +92,8 @@ def full_context() -> dict[str, Any]:
         "create_code_of_conduct": "y",
         "use_docker": "y",
         "use_devcontainer": "y",
+        "build_backend": "hatchling",
+        "use_uv": "y",
     }
 
 

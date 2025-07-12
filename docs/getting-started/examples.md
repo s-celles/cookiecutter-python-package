@@ -21,6 +21,7 @@ project_short_description [A modern Python package with best practices built-in.
 version [0.1.0]:
 python_requires [>=3.9]:
 license [MIT]:
+build_backend [setuptools]:
 use_ruff [y]:
 use_mypy [y]:
 use_pytest [y]:

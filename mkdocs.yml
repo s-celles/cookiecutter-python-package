@@ -78,6 +78,7 @@ nav:
       - Best Practices: configuration/best-practices.md
   - Tools Guide:
       - Overview: tools/overview.md
+      - Build Backend Selection: tools/build-backends.md
       - Packaging & Build: tools/packaging.md
       - Testing & Quality: tools/testing.md
       - Linting & Formatting: tools/linting.md
@@ -88,9 +89,11 @@ nav:
       - Contributing: development/contributing.md
       - Development Setup: development/setup.md
       - Testing the Template: development/testing.md
+      - Build Backend Testing: development/build-backend-testing.md
       - Release Process: development/releases.md
   - Reference:
       - Template Summary: reference/template-summary.md
+      - Python Standards: reference/standards.md
       - Generated Structure: reference/project-structure.md
       - FAQ: reference/faq.md
       - Troubleshooting: reference/troubleshooting.md

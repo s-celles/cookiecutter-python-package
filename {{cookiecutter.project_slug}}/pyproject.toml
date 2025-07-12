@@ -1,6 +1,20 @@
+{%- if cookiecutter.build_backend == "setuptools" %}
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
+{%- elif cookiecutter.build_backend == "hatchling" %}
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+{%- elif cookiecutter.build_backend == "flit" %}
+[build-system]
+requires = ["flit_core>=3.2,<4"]
+build-backend = "flit_core.buildapi"
+{%- elif cookiecutter.build_backend == "pdm" %}
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+{%- endif %}
 
 [project]
 name = "{{ cookiecutter.project_slug }}"
@@ -293,4 +307,40 @@ dev-dependencies = [
 
 [tool.uv.workspace]
 members = ["."]
+{%- endif %}
+
+{%- if cookiecutter.build_backend == "hatchling" %}
+
+# Hatchling-specific configuration
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/",
+    "tests/",
+    "README.md",
+    "LICENSE*",
+    "CHANGELOG.md",
+    "pyproject.toml",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/{{ cookiecutter.project_slug.replace('-', '_') }}"]
+
+[tool.hatch.version]
+path = "src/{{ cookiecutter.project_slug.replace('-', '_') }}/__init__.py"
+{%- elif cookiecutter.build_backend == "flit" %}
+
+# Flit-specific configuration
+[tool.flit.module]
+name = "{{ cookiecutter.project_slug.replace('-', '_') }}"
+path = "src/{{ cookiecutter.project_slug.replace('-', '_') }}/__init__.py"
+{%- elif cookiecutter.build_backend == "pdm" %}
+
+# PDM-specific configuration
+[tool.pdm.build]
+includes = ["src/"]
+package-dir = "src"
+
+[tool.pdm.version]
+source = "file"
+path = "src/{{ cookiecutter.project_slug.replace('-', '_') }}/__init__.py"
 {%- endif %}
