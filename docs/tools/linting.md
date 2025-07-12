@@ -4,9 +4,12 @@ Code quality tools ensure consistent style, catch common mistakes, and improve c
 
 ## ⚡ Ruff
 
+📖 **Documentation**: [https://docs.astral.sh/ruff/](https://docs.astral.sh/ruff/)
+
 **What it is**: Ultra-fast Python linter and formatter
 
 **Why important**:
+
 - 10-100x faster than alternatives (flake8, black, isort)
 - Combines multiple tools into one
 - Consistent code style across team
@@ -16,10 +19,10 @@ Code quality tools ensure consistent style, catch common mistakes, and improve c
 ### Tool Consolidation
 ```bash
 # One tool replaces many:
-# black (formatting)
-# isort (import sorting)
-# flake8 (linting)
-# pyupgrade (syntax modernization)
+# black (formatting) - https://black.readthedocs.io/
+# isort (import sorting) - https://pycqa.github.io/isort/
+# flake8 (linting) - https://flake8.pycqa.org/
+# pyupgrade (syntax modernization) - https://github.com/asottile/pyupgrade
 ruff format  # Format code
 ruff check   # Lint code
 ```
@@ -118,9 +121,12 @@ def long_function_name(
 
 ## 🎯 MyPy (Type Checking)
 
+📖 **Documentation**: [https://mypy.readthedocs.io/](https://mypy.readthedocs.io/)
+
 **What it is**: Static type checker for Python
 
 **Why important**:
+
 - Catches type-related bugs before runtime
 - Improves code documentation
 - Better IDE support (autocomplete, refactoring)
@@ -204,9 +210,12 @@ result = legacy_api_call()  # type: ignore[misc]
 
 ## 🔧 pre-commit
 
+📖 **Documentation**: [https://pre-commit.com/](https://pre-commit.com/)
+
 **What it is**: Git hooks that run before commits
 
 **Why important**:
+
 - Enforces code quality automatically
 - Prevents bad code from entering repository
 - Fast feedback loop for developers
@@ -268,9 +277,12 @@ pre-commit autoupdate
 
 ## 🛠️ Make/Makefile
 
+📖 **Documentation**: [https://www.gnu.org/software/make/manual/](https://www.gnu.org/software/make/manual/)
+
 **What it is**: Simple task automation
 
 **Why important**:
+
 - Common interface for development tasks
 - Easy onboarding for new developers
 - Works across platforms
@@ -357,6 +369,9 @@ git commit -m "feat: add new feature"
 ### IDE Integration
 
 #### VS Code Settings
+📖 **VS Code Python Extension**: [https://marketplace.visualstudio.com/items?itemName=ms-python.python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+📖 **Ruff Extension**: [https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff)
+
 ```json
 {
     "python.linting.enabled": true,
@@ -374,6 +389,9 @@ git commit -m "feat: add new feature"
 ```
 
 #### PyCharm Configuration
+📖 **PyCharm Documentation**: [https://www.jetbrains.com/help/pycharm/](https://www.jetbrains.com/help/pycharm/)
+📖 **Ruff Plugin**: [https://plugins.jetbrains.com/plugin/20574-ruff](https://plugins.jetbrains.com/plugin/20574-ruff)
+
 - Enable Ruff plugin
 - Configure MyPy integration
 - Set up automatic formatting on save
@@ -400,3 +418,22 @@ git commit -m "feat: add new feature"
 4. **Incremental checks**: Only check changed files when possible
 
 This comprehensive linting and formatting setup ensures your code maintains high quality, consistent style, and catches issues early in the development process.
+
+## 📚 Related Tools & Documentation
+
+### Core Tools
+- **Ruff**: [https://docs.astral.sh/ruff/](https://docs.astral.sh/ruff/) - Ultra-fast Python linter and formatter
+- **MyPy**: [https://mypy.readthedocs.io/](https://mypy.readthedocs.io/) - Static type checker for Python
+- **pre-commit**: [https://pre-commit.com/](https://pre-commit.com/) - Git hooks framework
+- **Make**: [https://www.gnu.org/software/make/manual/](https://www.gnu.org/software/make/manual/) - Build automation tool
+
+### Tools Replaced by Ruff
+- **Black**: [https://black.readthedocs.io/](https://black.readthedocs.io/) - Python code formatter
+- **isort**: [https://pycqa.github.io/isort/](https://pycqa.github.io/isort/) - Import sorting utility
+- **flake8**: [https://flake8.pycqa.org/](https://flake8.pycqa.org/) - Python linting tool
+- **pyupgrade**: [https://github.com/asottile/pyupgrade](https://github.com/asottile/pyupgrade) - Python syntax modernizer
+
+### IDE Extensions
+- **VS Code Python**: [https://marketplace.visualstudio.com/items?itemName=ms-python.python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+- **VS Code Ruff**: [https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff)
+- **PyCharm Ruff Plugin**: [https://plugins.jetbrains.com/plugin/20574-ruff](https://plugins.jetbrains.com/plugin/20574-ruff)
