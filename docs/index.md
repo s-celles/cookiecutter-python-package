@@ -49,6 +49,20 @@ Choose your preferred CLI framework:
 - **Click** (decorator-based)
 - **Argparse** (standard library)
 
+## ⚙️ Template Options Overview
+
+Customize your generated project by choosing from these options:
+
+- **Build Backend**: setuptools, hatchling, flit, or pdm
+- **Code Quality**: Ruff, MyPy, Bandit, Safety
+- **Testing**: pytest, coverage reporting
+- **Documentation**: MkDocs or Sphinx
+- **CLI Framework**: Typer, Click, Argparse, or none
+- **Package Management**: uv or pip
+- **Automation**: pre-commit, GitHub Actions, Dependabot
+
+See [Template Configuration](configuration/template-options.md) for detailed explanations of all options.
+
 ### 📚 **Documentation Ready**
 - **MkDocs** or **Sphinx** support
 - **README** templates with badges

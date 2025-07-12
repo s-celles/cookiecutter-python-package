@@ -17,72 +17,37 @@ pip install cookiecutter
 cookiecutter https://github.com/s-celles/cookiecutter-python-package.git
 ```
 
-## 📋 Usage
+That's it! You'll be prompted to customize your package with modern tools like **Ruff**, **pytest**, **MyPy**, and choice of **build backends** (setuptools, hatchling, flit, pdm).
 
-After generating your project:
+## ✨ What You Get
 
-1. **Navigate to your project**: `cd your-project-name`
-2. **Set up development environment**: `pip install -e .[dev]`
-3. **Configure tools**: Choose from Ruff, MyPy, pytest, pre-commit, and more
-4. **Start developing**: Write your code in `src/` with tests in `tests/`
-5. **Run quality checks**: `make lint`, `make test`, `make type-check`
-6. **Commit and push**: Pre-commit hooks ensure code quality
-
-For detailed setup instructions, see our [Quick Start Tutorial](docs/getting-started/quick-start.md).
-
-## ⚙️ Template Options
-
-Customize your generated project by choosing from these options:
-
-- **Build Backend**: setuptools, hatchling, flit, or pdm
-- **Code Quality**: Ruff, MyPy, Bandit, Safety
-- **Testing**: pytest, coverage reporting
-- **Documentation**: MkDocs or Sphinx
-- **CLI Framework**: Typer, Click, Argparse, or none
-- **Package Management**: uv or pip
-- **Automation**: pre-commit, GitHub Actions, Dependabot
-
-See [Template Configuration](docs/configuration/template-options.md) for all available options.
-
-## ✨ Features
-
-- 📦 Modern `pyproject.toml` configuration (PEP 621)
-- 🧪 Testing with pytest and coverage
-- 🔍 Code quality with Ruff, MyPy, Bandit, Safety
-- 🔧 Optional tools: uv, pre-commit, Tox, Nox
-- 🚀 CI/CD with GitHub Actions
-- 📚 Documentation with Sphinx or MkDocs
-- 🐳 Docker and dev container support
-- 🛠️ CLI support with Typer/Click/Argparse
+- 📦 **Modern packaging** with `pyproject.toml` (PEP 621)
+- 🏗️ **Build backend choice** (setuptools, hatchling, flit, pdm)
+- 🧪 **Testing** with pytest and coverage
+- 🔍 **Code quality** with Ruff, MyPy, Bandit, Safety
+- 🚀 **CI/CD** with GitHub Actions
+- 📚 **Documentation** with MkDocs or Sphinx
+- 🛠️ **CLI support** with Typer, Click, or Argparse
+- 🐳 **Container support** with Docker and dev containers
 
 ## 📖 Documentation
 
-For complete documentation, visit: **[Documentation Site](https://s-celles.github.io/cookiecutter-python-package)**
+**For complete documentation, examples, and detailed guides:**
 
-### Quick Links
+### 🔗 **[Visit Documentation Site →](https://s-celles.github.io/cookiecutter-python-package)**
 
-- [Installation Guide](docs/getting-started/installation.md)
-- [Quick Start Tutorial](docs/getting-started/quick-start.md)
-- [Template Configuration](docs/configuration/template-options.md)
-- [Available Tools](docs/tools/overview.md)
-- [Contributing Guide](docs/development/contributing.md)
+The documentation includes:
 
-## 📚 What's Included
-
-The generated package includes:
-
-- Source layout with `src/` directory
-- Comprehensive testing setup
-- Code quality tools and linting
-- CI/CD workflows
-- Documentation framework
-- Development tools and automation
-- Security scanning
-- Type checking support
+- **[Quick Start Guide](https://s-celles.github.io/cookiecutter-python-package/getting-started/quick-start/)** - Step-by-step setup
+- **[Template Options](https://s-celles.github.io/cookiecutter-python-package/configuration/template-options/)** - All configuration choices
+- **[Tools Overview](https://s-celles.github.io/cookiecutter-python-package/tools/overview/)** - Detailed tool explanations
+- **[Examples](https://s-celles.github.io/cookiecutter-python-package/getting-started/examples/)** - Real-world usage patterns
+- **[Build Backends Guide](https://s-celles.github.io/cookiecutter-python-package/tools/build-backends/)** - Choose the right backend
+- **[Contributing Guide](https://s-celles.github.io/cookiecutter-python-package/development/contributing/)** - Help improve the template
 
 ## 🤝 Contributing
 
-See our [Contributing Guide](docs/development/contributing.md) for details on how to contribute to this project.
+We welcome contributions! See our [Contributing Guide](https://s-celles.github.io/cookiecutter-python-package/development/contributing/) for details.
 
 ## 📝 License
 
