@@ -7,6 +7,58 @@
 [![PyPI version](https://badge.fury.io/py/{{ cookiecutter.project_slug }}.svg)](https://badge.fury.io/py/{{ cookiecutter.project_slug }})
 [![Python versions](https://img.shields.io/pypi/pyversions/{{ cookiecutter.project_slug }}.svg)](https://pypi.org/project/{{ cookiecutter.project_slug }}/)
 [![License: {{ cookiecutter.license }}](https://img.shields.io/badge/License-{{ cookiecutter.license }}-blue.svg)](https://opensource.org/licenses/{{ cookiecutter.license }})
+{%- if cookiecutter.use_pre_commit == "y" %}
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+{%- endif %}
+{%- if cookiecutter.use_commitizen == "y" %}
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+{%- endif %}
+{%- if cookiecutter.use_ruff == "y" %}
+[![Code style: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+{%- endif %}
+{%- if cookiecutter.use_mypy == "y" %}
+[![Type checked: mypy](https://img.shields.io/badge/type%20checked-mypy-blue.svg)](https://github.com/python/mypy)
+{%- endif %}
+{%- if cookiecutter.use_bandit == "y" %}
+[![Security: bandit](https://img.shields.io/badge/security-bandit-green.svg)](https://github.com/PyCQA/bandit)
+{%- endif %}
+{%- if cookiecutter.use_safety == "y" %}
+[![Safety check](https://img.shields.io/badge/safety-checked-green.svg)](https://github.com/pyupio/safety)
+{%- endif %}
+{%- if cookiecutter.use_pytest == "y" %}
+[![Tests](https://img.shields.io/badge/tests-pytest-blue.svg)](https://github.com/pytest-dev/pytest)
+{%- endif %}
+{%- if cookiecutter.use_github_actions == "y" %}
+[![Release](https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}/actions/workflows/release.yml/badge.svg)](https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}/actions/workflows/release.yml)
+{%- endif %}
+{%- if cookiecutter.use_semantic_release == "y" %}
+[![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
+{%- endif %}
+{%- if cookiecutter.build_backend == "hatchling" %}
+[![Built with: Hatch](https://img.shields.io/badge/built%20with-hatch-4051b5.svg)](https://github.com/pypa/hatch)
+{%- elif cookiecutter.build_backend == "pdm" %}
+[![Built with: PDM](https://img.shields.io/badge/built%20with-pdm-blueviolet.svg)](https://pdm.fming.dev/)
+{%- elif cookiecutter.build_backend == "flit" %}
+[![Built with: Flit](https://img.shields.io/badge/built%20with-flit-orange.svg)](https://flit.pypa.io/)
+{%- endif %}
+{%- if cookiecutter.use_uv == "y" %}
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+{%- endif %}
+{%- if cookiecutter.use_mkdocs == "y" %}
+[![Documentation](https://img.shields.io/badge/docs-mkdocs-blue.svg)](https://{{ cookiecutter.github_username }}.github.io/{{ cookiecutter.project_slug }})
+{%- elif cookiecutter.use_sphinx == "y" %}
+[![Documentation](https://img.shields.io/badge/docs-sphinx-blue.svg)](https://{{ cookiecutter.github_username }}.github.io/{{ cookiecutter.project_slug }})
+{%- endif %}
+{%- if cookiecutter.build_backend == "hatchling" %}
+[![Built with: Hatch](https://img.shields.io/badge/built%20with-hatch-4051b5.svg)](https://github.com/pypa/hatch)
+{%- elif cookiecutter.build_backend == "pdm" %}
+[![Built with: PDM](https://img.shields.io/badge/built%20with-pdm-blueviolet.svg)](https://pdm.fming.dev/)
+{%- elif cookiecutter.build_backend == "flit" %}
+[![Built with: Flit](https://img.shields.io/badge/built%20with-flit-orange.svg)](https://flit.pypa.io/)
+{%- endif %}
+{%- if cookiecutter.use_uv == "y" %}
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+{%- endif %}
 
 {{ cookiecutter.project_short_description }}
 
