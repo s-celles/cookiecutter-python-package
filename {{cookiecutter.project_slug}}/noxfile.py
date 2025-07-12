@@ -60,12 +60,18 @@ def type_check(session: nox.Session) -> None:
 {%- endif %}
 
 
-{%- if cookiecutter.use_bandit == "y" %}
+{%- if cookiecutter.use_bandit == "y" or cookiecutter.use_safety == "y" %}
 @nox.session
 def security(session: nox.Session) -> None:
-    """Run bandit security checks."""
+    """Run security checks."""
+{%- if cookiecutter.use_bandit == "y" %}
     session.install("bandit")
     session.run("bandit", "-r", "src/{{ cookiecutter.project_slug }}/")
+{%- endif %}
+{%- if cookiecutter.use_safety == "y" %}
+    session.install("safety")
+    session.run("safety", "check")
+{%- endif %}
 {%- endif %}
 
 

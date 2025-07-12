@@ -21,14 +21,14 @@ cookiecutter https://github.com/s-celles/cookiecutter-python-package.git
 
 - 📦 Modern `pyproject.toml` configuration (PEP 621)
 - 🧪 Testing with pytest and coverage
-- 🔍 Code quality with Ruff, MyPy, Bandit
+- 🔍 Code quality with Ruff, MyPy, Bandit, Safety
 - 🔧 Optional tools: uv, pre-commit, Tox, Nox
 - 🚀 CI/CD with GitHub Actions
 - 📚 Documentation with Sphinx or MkDocs
 - 🐳 Docker and dev container support
 - 🛠️ CLI support with Typer/Click
 
-## � Documentation
+## 📖 Documentation
 
 For complete documentation, visit: **[Documentation Site](https://s-celles.github.io/cookiecutter-python-package)**
 

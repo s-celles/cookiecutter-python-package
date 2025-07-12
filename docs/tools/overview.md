@@ -25,7 +25,7 @@ Modern Python development emphasizes:
 - MyPy (type checking)
 - Coverage (test coverage)
 - pre-commit (automation)
-- Bandit (security)
+- Bandit & Safety (security)
 
 ### Enterprise/Team Setup
 - All quality tools +

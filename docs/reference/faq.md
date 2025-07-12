@@ -167,7 +167,7 @@ make format            # or ruff format src tests
 
 # Before committing (pre-commit handles this automatically)
 make type-check        # or mypy src
-make security-check    # or bandit -r src
+make security-check    # or bandit -r src && safety check
 
 # Commit (pre-commit runs automatically)
 git add .

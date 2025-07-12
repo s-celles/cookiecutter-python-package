@@ -154,10 +154,11 @@ pytest -n auto
 Make sure to write tests for any new functionality you add.
 {%- endif %}
 
-{%- if cookiecutter.use_bandit == "y" %}
+{%- if cookiecutter.use_bandit == "y" or cookiecutter.use_safety == "y" %}
 
 ### Security
 
+{%- if cookiecutter.use_bandit == "y" %}
 We use [Bandit](https://bandit.readthedocs.io/) for security checks:
 
 ```bash
@@ -167,6 +168,19 @@ uv run bandit -r src/{{ cookiecutter.project_slug }}/
 bandit -r src/{{ cookiecutter.project_slug }}/
 {%- endif %}
 ```
+{%- endif %}
+
+{%- if cookiecutter.use_safety == "y" %}
+We use [Safety](https://pyup.io/safety/) to check dependencies for known vulnerabilities:
+
+```bash
+{%- if cookiecutter.use_uv == "y" %}
+uv run safety check
+{%- else %}
+safety check
+{%- endif %}
+```
+{%- endif %}
 {%- endif %}
 
 ## 📝 Pull Request Process

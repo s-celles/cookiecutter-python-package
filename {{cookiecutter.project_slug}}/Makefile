@@ -65,13 +65,23 @@ type-check: ## Run type checking
 {%- endif %}
 {%- endif %}
 
-{%- if cookiecutter.use_bandit == "y" %}
+{%- if cookiecutter.use_bandit == "y" or cookiecutter.use_safety == "y" %}
 {%- if cookiecutter.use_uv == "y" %}
 security: ## Run security checks
+{%- if cookiecutter.use_bandit == "y" %}
 	uv run bandit -r src/{{ cookiecutter.project_slug }}/
+{%- endif %}
+{%- if cookiecutter.use_safety == "y" %}
+	uv run safety check
+{%- endif %}
 {%- else %}
 security: ## Run security checks
+{%- if cookiecutter.use_bandit == "y" %}
 	bandit -r src/{{ cookiecutter.project_slug }}/
+{%- endif %}
+{%- if cookiecutter.use_safety == "y" %}
+	safety check
+{%- endif %}
 {%- endif %}
 {%- endif %}
 
