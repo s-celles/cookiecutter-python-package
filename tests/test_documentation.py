@@ -23,17 +23,84 @@ class TestDocumentation:
 
         content = readme_file.read_text(encoding="utf-8")
 
-        # Check for required sections
+        # Check for required sections in streamlined README
         required_sections = [
             "# ",  # Main title
-            "Features",  # Features section (with or without emoji)
-            "Quick Start",
-            "Usage",
-            "Template Options",
+            "Quick Start",  # Quick start section
+            "What You Get",  # Features overview (renamed from "Features")
+            "Documentation",  # Documentation section pointing to docs site
+            "Contributing",  # Contributing section
+            "License",  # License section
         ]
 
         for section in required_sections:
             assert section in content, f"README should contain {section} section"
+
+        # Check that README points to documentation site for detailed information
+        assert "s-celles.github.io/cookiecutter-python-package" in content, (
+            "README should link to documentation site"
+        )
+
+        # Check that README mentions key features briefly
+        key_features = [
+            "Modern packaging",
+            "Build backend",
+            "Testing",
+            "Code quality",
+        ]
+
+        for feature in key_features:
+            assert feature in content, f"README should mention {feature}"
+
+    def test_documentation_contains_detailed_info(self, template_dir: Path) -> None:
+        """Test that documentation contains detailed information moved from README."""
+        docs_dir = template_dir / "docs"
+
+        # Check that index.md contains template options overview
+        index_file = docs_dir / "index.md"
+        if index_file.exists():
+            content = index_file.read_text(encoding="utf-8")
+
+            # Should contain template options overview that was in README
+            assert "Template Options" in content, (
+                "Documentation index should contain template options overview"
+            )
+            assert "Build Backend" in content, (
+                "Documentation should mention build backends"
+            )
+            assert "Code Quality" in content, (
+                "Documentation should mention code quality tools"
+            )
+
+        # Check that quick-start.md contains usage instructions
+        quick_start_file = docs_dir / "getting-started" / "quick-start.md"
+        if quick_start_file.exists():
+            content = quick_start_file.read_text(encoding="utf-8")
+
+            # Should contain detailed usage instructions that were in README
+            assert (
+                "Set Up Development Environment" in content
+                or "development environment" in content
+            ), "Quick start should contain development setup instructions"
+            assert "pip install" in content, (
+                "Quick start should contain installation instructions"
+            )
+
+        # Check that configuration guide exists and contains template options
+        config_file = docs_dir / "configuration" / "template-options.md"
+        if config_file.exists():
+            content = config_file.read_text(encoding="utf-8")
+
+            # Should contain detailed template options
+            assert "build_backend" in content, (
+                "Configuration should document build_backend option"
+            )
+            assert "setuptools" in content, (
+                "Configuration should mention setuptools backend"
+            )
+            assert "hatchling" in content, (
+                "Configuration should mention hatchling backend"
+            )
 
     def test_tools_documentation_structure(self, template_dir: Path) -> None:
         """Test that tools documentation structure exists in docs/ folder."""
