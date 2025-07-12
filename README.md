@@ -37,7 +37,7 @@ Customize your generated project by choosing from these options:
 - **Code Quality**: Ruff, MyPy, Bandit, Safety
 - **Testing**: pytest, coverage reporting
 - **Documentation**: MkDocs or Sphinx
-- **CLI Framework**: Typer, Click, or Argparse
+- **CLI Framework**: Typer, Click, Argparse, or none
 - **Package Management**: uv or pip
 - **Automation**: pre-commit, GitHub Actions, Dependabot
 
@@ -52,7 +52,7 @@ See [Template Configuration](docs/configuration/template-options.md) for all ava
 - 🚀 CI/CD with GitHub Actions
 - 📚 Documentation with Sphinx or MkDocs
 - 🐳 Docker and dev container support
-- 🛠️ CLI support with Typer/Click
+- 🛠️ CLI support with Typer/Click/Argparse
 
 ## 📖 Documentation
 

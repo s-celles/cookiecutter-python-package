@@ -7,6 +7,7 @@ Comprehensive testing and quality assurance tools ensure your code is reliable, 
 **What it is**: Modern Python testing framework
 
 **Why important**:
+
 - More readable test syntax than unittest
 - Powerful fixtures for test setup
 - Parametrized testing
@@ -70,6 +71,7 @@ addopts = [
 **What it is**: Measures how much of your code is tested
 
 **Why important**:
+
 - Identifies untested code paths
 - Helps maintain high code quality
 - Required by many CI/CD pipelines
@@ -113,6 +115,7 @@ fail_under = 90
 ```
 
 ### Coverage Reports
+
 - **Terminal**: Quick overview with missing lines
 - **HTML**: Detailed interactive reports
 - **XML**: For CI/CD integration
@@ -123,6 +126,7 @@ fail_under = 90
 **What it is**: Testing across multiple Python versions
 
 **Why important**:
+
 - Ensures compatibility across Python versions
 - Isolated testing environments
 - Standardized testing commands
