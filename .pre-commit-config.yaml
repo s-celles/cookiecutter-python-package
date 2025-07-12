@@ -43,6 +43,12 @@ repos:
         files: ^hooks/.*\.py$
         types: [python]
 
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.21.3
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+
   - repo: local
     hooks:
       - id: cookiecutter-json-validate
