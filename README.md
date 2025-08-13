@@ -2,6 +2,7 @@
 
 A modern [cookiecutter](https://github.com/cookiecutter/cookiecutter) template for Python packages with best practices built-in.
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/s-celles/cookiecutter-python-package)
 [![CI](https://github.com/s-celles/cookiecutter-python-package/actions/workflows/test.yml/badge.svg)](https://github.com/s-celles/cookiecutter-python-package/actions/workflows/test.yml)
 [![Documentation](https://github.com/s-celles/cookiecutter-python-package/actions/workflows/docs.yml/badge.svg)](https://s-celles.github.io/cookiecutter-python-package/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
